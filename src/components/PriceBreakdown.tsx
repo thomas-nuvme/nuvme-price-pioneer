@@ -88,25 +88,6 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
           ))}
         </div>
 
-        {/* <div className="space-y-2 pt-2 border-t border-border">
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-muted-foreground">Subtotal</span>
-            <AnimatedNumber 
-              value={totalPrice / (1 + MARGIN_PERCENTAGE)} 
-              formatter={formatPrice} 
-              className="font-medium"
-            />
-          </div>
-          <div className="flex justify-between items-center text-sm">
-            <span className="text-muted-foreground">Margem ({MARGIN_PERCENTAGE * 100}%)</span>
-            <AnimatedNumber 
-              value={totalPrice - (totalPrice / (1 + MARGIN_PERCENTAGE))} 
-              formatter={formatPrice} 
-              className="font-medium"
-            />
-          </div>
-        </div> */}
-
         <div className="mt-4 pt-3 border-t border-border">
           <div className="flex justify-between items-center">
             <span className="font-medium">Preço Total Estimado</span>
