@@ -1,4 +1,3 @@
-
 export type MissionType = 'modernization' | 'security' | 'migration' | 'finops' | 'nextgen';
 
 export interface Mission {
@@ -20,6 +19,7 @@ export interface Module {
   minValue?: number;
   maxValue?: number;
   defaultValue?: number;
+  icon?: string;
 }
 
 export interface SelectedModule {
@@ -33,31 +33,31 @@ export const missions: Mission[] = [
     id: 'modernization',
     name: 'Modernização',
     description: 'Modernize sua infraestrutura e aplicações',
-    icon: 'refresh-cw'
+    icon: 'Rocket'
   },
   {
     id: 'security',
     name: 'Segurança',
     description: 'Melhore sua postura de segurança e conformidade',
-    icon: 'shield'
+    icon: 'ShieldCheck'
   },
   {
     id: 'migration',
     name: 'Migração',
     description: 'Migre suas cargas de trabalho para a nuvem',
-    icon: 'move'
+    icon: 'MoveRight'
   },
   {
     id: 'finops',
     name: 'FinOps',
     description: 'Otimize seus custos e gastos na nuvem',
-    icon: 'trending-down'
+    icon: 'TrendingDown'
   },
   {
     id: 'nextgen',
     name: 'NextGen',
     description: 'Implemente tecnologias de próxima geração',
-    icon: 'zap'
+    icon: 'Zap'
   }
 ];
 
@@ -74,7 +74,8 @@ export const modules: Module[] = [
     variableUnit: 'pipelines',
     minValue: 1,
     maxValue: 50,
-    defaultValue: 5
+    defaultValue: 5,
+    icon: 'GitPullRequest'
   },
   {
     id: 'kubernetes',
@@ -87,7 +88,8 @@ export const modules: Module[] = [
     variableUnit: 'clusters',
     minValue: 1,
     maxValue: 20,
-    defaultValue: 3
+    defaultValue: 3,
+    icon: 'Container'
   },
   {
     id: 'database',
@@ -100,7 +102,8 @@ export const modules: Module[] = [
     variableUnit: 'bancos extras',
     minValue: 1,
     maxValue: 30,
-    defaultValue: 5
+    defaultValue: 5,
+    icon: 'Database'
   },
   {
     id: 'gitops',
@@ -113,7 +116,8 @@ export const modules: Module[] = [
     variableUnit: 'repositórios extras',
     minValue: 1,
     maxValue: 50,
-    defaultValue: 10
+    defaultValue: 10,
+    icon: 'GitBranch'
   },
   {
     id: 'containerization',
@@ -126,7 +130,8 @@ export const modules: Module[] = [
     variableUnit: 'APIs',
     minValue: 1,
     maxValue: 100,
-    defaultValue: 10
+    defaultValue: 10,
+    icon: 'Package'
   },
   {
     id: 'karpenter',
@@ -139,7 +144,8 @@ export const modules: Module[] = [
     variableUnit: 'Deployments/APIs',
     minValue: 1,
     maxValue: 50,
-    defaultValue: 8
+    defaultValue: 8,
+    icon: 'Scale'
   },
   {
     id: 'security_audit',
@@ -152,7 +158,8 @@ export const modules: Module[] = [
     variableUnit: 'aplicações',
     minValue: 1,
     maxValue: 50,
-    defaultValue: 5
+    defaultValue: 5,
+    icon: 'Shield'
   },
   {
     id: 'cost_optimization',
@@ -165,7 +172,8 @@ export const modules: Module[] = [
     variableUnit: 'contas',
     minValue: 1,
     maxValue: 20,
-    defaultValue: 3
+    defaultValue: 3,
+    icon: 'BarChart2'
   },
   {
     id: 'devops_training',
@@ -178,7 +186,8 @@ export const modules: Module[] = [
     variableUnit: 'participantes',
     minValue: 5,
     maxValue: 50,
-    defaultValue: 10
+    defaultValue: 10,
+    icon: 'GraduationCap'
   },
   {
     id: 'cloud_migration',
@@ -191,7 +200,8 @@ export const modules: Module[] = [
     variableUnit: 'aplicações',
     minValue: 1,
     maxValue: 50,
-    defaultValue: 5
+    defaultValue: 5,
+    icon: 'Cloud'
   }
 ];
 

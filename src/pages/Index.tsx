@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -14,7 +13,6 @@ import MissionSelector from "@/components/MissionSelector";
 import ModuleCard from "@/components/ModuleCard";
 import PriceBreakdown from "@/components/PriceBreakdown";
 import AnimatedNumber from "@/components/AnimatedNumber";
-import NuvmeLogo from "@/components/NuvmeLogo";
 import { Icon } from "@/components/Icon";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -32,7 +30,6 @@ const Index = () => {
       );
       setFilteredModules(newFilteredModules);
       
-      // Remove any selected modules that are not part of the new mission
       const validSelectedModules = selectedModules.filter(
         (selected) => selected.module.missions.includes(selectedMission)
       );
@@ -129,9 +126,6 @@ const Index = () => {
         className="max-w-7xl mx-auto space-y-10"
       >
         <motion.div variants={itemVariants} className="text-center">
-          <div className="flex justify-center mb-6">
-            <NuvmeLogo className="w-32 md:w-40 h-auto" />
-          </div>
           <h1 className="text-4xl md:text-5xl font-semibold text-nuvme-dark mb-4">
             Calculadora de Preços Nuvme
           </h1>

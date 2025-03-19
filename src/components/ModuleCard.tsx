@@ -59,19 +59,27 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
       )}
     >
       <div className="flex items-start justify-between">
-        <div className="flex-1">
-          <div className="flex items-center">
-            <h3 className="font-medium text-base">{module.name}</h3>
-            <button 
-              onClick={() => setShowInfo(!showInfo)}
-              className="ml-2 text-muted-foreground hover:text-nuvme-blue focus:outline-none focus:text-nuvme-blue transition-colors"
-            >
-              <Icon name="Info" className="w-4 h-4" />
-            </button>
+        <div className="flex items-center gap-3 flex-1">
+          <div className={cn(
+            "w-10 h-10 rounded-full flex items-center justify-center",
+            isSelected ? "bg-nuvme-blue text-white" : "bg-secondary text-nuvme-dark"
+          )}>
+            <Icon name={module.icon || "Package"} className="w-5 h-5" />
           </div>
-          <p className="text-sm text-muted-foreground mt-1">
-            {showInfo ? module.description : `Preço base: ${formatCurrency(module.custoBase)}`}
-          </p>
+          <div>
+            <div className="flex items-center">
+              <h3 className="font-medium text-base">{module.name}</h3>
+              <button 
+                onClick={() => setShowInfo(!showInfo)}
+                className="ml-2 text-muted-foreground hover:text-nuvme-blue focus:outline-none focus:text-nuvme-blue transition-colors"
+              >
+                <Icon name="Info" className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-sm text-muted-foreground mt-1">
+              {showInfo ? module.description : `Preço base: ${formatCurrency(module.custoBase)}`}
+            </p>
+          </div>
         </div>
 
         <div className="flex items-center">
