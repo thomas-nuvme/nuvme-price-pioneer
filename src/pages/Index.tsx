@@ -126,6 +126,12 @@ const Index = () => {
         className="max-w-7xl mx-auto space-y-10"
       >
         <motion.div variants={itemVariants} className="text-center">
+          <motion.img 
+            variants={itemVariants}
+            src="src/components/images/nuvme-logo.png" 
+            alt="Nuvme Logo" 
+            className="mx-auto w-40 mb-4"
+          />
           <h1 className="text-4xl md:text-5xl font-semibold text-nuvme-dark mb-4">
             Calculadora de Preços Nuvme
           </h1>
