@@ -88,7 +88,7 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
           ))}
         </div>
 
-        <div className="space-y-2 pt-2 border-t border-border">
+        {/* <div className="space-y-2 pt-2 border-t border-border">
           <div className="flex justify-between items-center text-sm">
             <span className="text-muted-foreground">Subtotal</span>
             <AnimatedNumber 
@@ -105,7 +105,7 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
               className="font-medium"
             />
           </div>
-        </div>
+        </div> */}
 
         <div className="mt-4 pt-3 border-t border-border">
           <div className="flex justify-between items-center">
@@ -117,9 +117,6 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
               duration={800}
             />
           </div>
-          <p className="text-xs text-muted-foreground mt-1">
-            Baseado na taxa padrão de R${HOURLY_RATE}/hora
-          </p>
         </div>
       </motion.div>
     </AnimatePresence>
