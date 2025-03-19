@@ -14,6 +14,7 @@ import MissionSelector from "@/components/MissionSelector";
 import ModuleCard from "@/components/ModuleCard";
 import PriceBreakdown from "@/components/PriceBreakdown";
 import AnimatedNumber from "@/components/AnimatedNumber";
+import NuvmeLogo from "@/components/NuvmeLogo";
 import { Icon } from "@/components/Icon";
 import { useToast } from "@/components/ui/use-toast";
 
@@ -128,7 +129,10 @@ const Index = () => {
         className="max-w-7xl mx-auto space-y-10"
       >
         <motion.div variants={itemVariants} className="text-center">
-          <h1 className="text-4xl md:text-5xl font-semibold text-nuvme-black mb-4">
+          <div className="flex justify-center mb-6">
+            <NuvmeLogo className="w-32 md:w-40 h-auto" />
+          </div>
+          <h1 className="text-4xl md:text-5xl font-semibold text-nuvme-dark mb-4">
             Calculadora de Preços Nuvme
           </h1>
           <p className="text-lg text-nuvme-dark-gray max-w-3xl mx-auto">
@@ -159,7 +163,7 @@ const Index = () => {
                     <h2 className="text-lg font-medium">Módulos Disponíveis</h2>
                     <button
                       onClick={handleReset}
-                      className="inline-flex items-center text-sm text-muted-foreground hover:text-nuvme-blue transition-colors"
+                      className="inline-flex items-center text-sm text-muted-foreground hover:text-nuvme-teal transition-colors"
                     >
                       <Icon name="RotateCcw" className="w-3 h-3 mr-1" />
                       Reiniciar
@@ -198,10 +202,10 @@ const Index = () => {
             variants={itemVariants}
             className="mt-12 text-center"
           >
-            <div className="inline-block p-4 rounded-full bg-nuvme-light-blue animate-float">
+            <div className="inline-block p-4 rounded-full bg-nuvme-light-teal animate-float">
               <Icon 
                 name="MousePointerClick" 
-                className="w-8 h-8 text-nuvme-blue" 
+                className="w-8 h-8 text-nuvme-teal" 
               />
             </div>
             <p className="mt-4 text-muted-foreground">

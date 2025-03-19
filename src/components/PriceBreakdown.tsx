@@ -13,6 +13,11 @@ interface PriceBreakdownProps {
   totalPrice: number;
 }
 
+// Adicionando a função calculateModuleCost diretamente neste componente
+const calculateModuleCost = (module: any, quantity: number): number => {
+  return module.custoBase + (module.variableFactor * quantity * HOURLY_RATE);
+};
+
 const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
   selectedMission,
   selectedModules,
@@ -47,11 +52,11 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
         animate="visible"
         exit="exit"
         variants={containerVariants}
-        className="glass rounded-2xl border border-nuvme-blue/10 p-6 shadow-sm"
+        className="glass rounded-2xl border border-nuvme-teal/10 p-6 shadow-sm"
       >
         <div className="flex items-center mb-4">
-          <div className="w-8 h-8 rounded-full bg-nuvme-light-blue flex items-center justify-center mr-3">
-            <Icon name={selectedMission.icon} className="w-4 h-4 text-nuvme-blue" />
+          <div className="w-8 h-8 rounded-full bg-nuvme-teal/20 flex items-center justify-center mr-3">
+            <Icon name={selectedMission.icon} className="w-4 h-4 text-nuvme-teal" />
           </div>
           <h3 className="text-lg font-medium">Missão {selectedMission.name}</h3>
         </div>

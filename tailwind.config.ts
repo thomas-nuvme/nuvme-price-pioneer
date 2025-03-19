@@ -64,9 +64,12 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				nuvme: {
-					blue: '#0EA5E9',
-					'light-blue': '#E0F2FE',
-					'dark-blue': '#0369A1',
+					// Adicionadas as cores exatas do logotipo da Nuvme
+					teal: '#00C7B1',         // Verde Teal - PANTONE 3265 C
+					blue: '#0074BB',         // Azul - PANTONE 660 C
+					dark: '#1C374A',         // Azul escuro - PANTONE 7546 C
+					'light-teal': '#B2E8E0', // Versão clara do teal para backgrounds
+					'light-blue': '#B2D4E8', // Versão clara do azul para backgrounds
 					gray: '#F8FAFC',
 					'dark-gray': '#64748B',
 					black: '#0F172A'

@@ -16,7 +16,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 199 89% 48%;
+    --primary: 203 100% 37%; /* Azul Nuvme #0074BB */
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -33,7 +33,7 @@
 
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
-    --ring: 199 89% 48%;
+    --ring: 167 100% 39%; /* Teal Nuvme #00C7B1 */
 
     --radius: 0.8rem;
 
@@ -48,17 +48,17 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
+    --background: 211 29% 20%; /* Baseado no azul escuro Nuvme */
     --foreground: 210 40% 98%;
 
-    --card: 222.2 84% 4.9%;
+    --card: 211 29% 20%;
     --card-foreground: 210 40% 98%;
 
-    --popover: 222.2 84% 4.9%;
+    --popover: 211 29% 20%;
     --popover-foreground: 210 40% 98%;
 
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
+    --primary: 167 100% 39%; /* Teal Nuvme #00C7B1 */
+    --primary-foreground: 210 40% 98%;
 
     --secondary: 217.2 32.6% 17.5%;
     --secondary-foreground: 210 40% 98%;
@@ -74,7 +74,8 @@
 
     --border: 217.2 32.6% 17.5%;
     --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+    --ring: 203 100% 37%; /* Azul Nuvme #0074BB */
+    
     --sidebar-background: 240 5.9% 10%;
     --sidebar-foreground: 240 4.8% 95.9%;
     --sidebar-primary: 224.3 76.3% 48%;
@@ -100,13 +101,13 @@
     @apply font-medium tracking-tight;
   }
 
-  /* Glass effect */
+  /* Glass effect com as cores da Nuvme */
   .glass {
     @apply bg-white/70 backdrop-blur-md border border-white/20;
   }
   
   .glass-dark {
-    @apply bg-black/10 backdrop-blur-md border border-white/10;
+    @apply bg-nuvme-dark/10 backdrop-blur-md border border-white/10;
   }
   
   /* Custom scrollbar */

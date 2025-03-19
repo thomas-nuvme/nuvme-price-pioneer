@@ -25,10 +25,10 @@ const MissionSelector: React.FC<MissionSelectorProps> = ({
             onClick={() => onSelectMission(mission.id)}
             className={cn(
               "relative flex flex-col items-center p-6 rounded-2xl border transition-all duration-300 overflow-hidden",
-              "hover:shadow-md hover:border-nuvme-blue/50",
-              "focus:outline-none focus:ring-2 focus:ring-nuvme-blue focus:ring-offset-2",
+              "hover:shadow-md hover:border-nuvme-teal/50",
+              "focus:outline-none focus:ring-2 focus:ring-nuvme-teal focus:ring-offset-2",
               selectedMission === mission.id
-                ? "border-nuvme-blue bg-nuvme-light-blue shadow-sm"
+                ? "border-nuvme-teal bg-nuvme-light-teal shadow-sm"
                 : "border-border bg-white"
             )}
           >
@@ -36,8 +36,8 @@ const MissionSelector: React.FC<MissionSelectorProps> = ({
               className={cn(
                 "w-12 h-12 flex items-center justify-center rounded-full mb-3 transition-all duration-300",
                 selectedMission === mission.id
-                  ? "bg-nuvme-blue text-white"
-                  : "bg-secondary text-nuvme-dark-blue"
+                  ? "bg-nuvme-teal text-white"
+                  : "bg-secondary text-nuvme-dark"
               )}
             >
               <Icon name={mission.icon} className="w-5 h-5" />
@@ -48,7 +48,7 @@ const MissionSelector: React.FC<MissionSelectorProps> = ({
             </p>
             
             {selectedMission === mission.id && (
-              <div className="absolute bottom-0 left-0 w-full h-1 bg-nuvme-blue" />
+              <div className="absolute bottom-0 left-0 w-full h-1 bg-nuvme-teal" />
             )}
           </button>
         ))}
