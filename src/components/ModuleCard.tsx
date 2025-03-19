@@ -76,9 +76,6 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
                 <Icon name="Info" className="w-4 h-4" />
               </button>
             </div>
-            <p className="text-sm text-muted-foreground mt-1">
-              {showInfo ? module.description : `Preço base: ${formatCurrency(module.custoBase)}`}
-            </p>
           </div>
         </div>
 
