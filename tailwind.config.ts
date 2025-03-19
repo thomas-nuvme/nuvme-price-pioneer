@@ -64,7 +64,7 @@ export default {
 					ring: 'hsl(var(--sidebar-ring))'
 				},
 				nuvme: {
-					// Adicionadas as cores exatas do logotipo da Nuvme
+					// Cores exatas do logotipo da Nuvme conforme as referências Pantone
 					teal: '#00C7B1',         // Verde Teal - PANTONE 3265 C
 					blue: '#0074BB',         // Azul - PANTONE 660 C
 					dark: '#1C374A',         // Azul escuro - PANTONE 7546 C
