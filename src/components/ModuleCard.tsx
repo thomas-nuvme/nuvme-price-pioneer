@@ -70,7 +70,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
             </button>
           </div>
           <p className="text-sm text-muted-foreground mt-1">
-            {showInfo ? module.description : `Base price: ${formatCurrency(module.basePrice)}`}
+            {showInfo ? module.description : `Preço base: ${formatCurrency(module.custoBase)}`}
           </p>
         </div>
 

@@ -54,8 +54,8 @@ const Index = () => {
     setSelectedMission(mission);
     
     toast({
-      title: "Mission selected",
-      description: `${missions.find(m => m.id === mission)?.name} mission selected.`,
+      title: "Missão selecionada",
+      description: `Missão ${missions.find(m => m.id === mission)?.name} selecionada.`,
     });
   };
 
@@ -68,8 +68,8 @@ const Index = () => {
         );
       } else {
         toast({
-          title: "Module added",
-          description: `${module.name} added to your calculation.`,
+          title: "Módulo adicionado",
+          description: `${module.name} adicionado ao seu orçamento.`,
         });
         return [...prev, { module, quantity }];
       }
@@ -81,8 +81,8 @@ const Index = () => {
       const moduleToRemove = prev.find(item => item.module.id === moduleId);
       if (moduleToRemove) {
         toast({
-          title: "Module removed",
-          description: `${moduleToRemove.module.name} removed from your calculation.`,
+          title: "Módulo removido",
+          description: `${moduleToRemove.module.name} removido do seu orçamento.`,
         });
       }
       return prev.filter((item) => item.module.id !== moduleId);
@@ -93,8 +93,8 @@ const Index = () => {
     setSelectedMission(null);
     setSelectedModules([]);
     toast({
-      title: "Calculator reset",
-      description: "All selections have been cleared.",
+      title: "Calculadora reiniciada",
+      description: "Todas as seleções foram limpas.",
     });
   };
 
@@ -129,10 +129,10 @@ const Index = () => {
       >
         <motion.div variants={itemVariants} className="text-center">
           <h1 className="text-4xl md:text-5xl font-semibold text-nuvme-black mb-4">
-            Nuvme Pricing Calculator
+            Calculadora de Preços Nuvme
           </h1>
           <p className="text-lg text-nuvme-dark-gray max-w-3xl mx-auto">
-            Select your mission and modules to get an estimated price for your project
+            Selecione sua missão e módulos para obter um preço estimado para seu projeto
           </p>
         </motion.div>
 
@@ -156,13 +156,13 @@ const Index = () => {
               <div className="flex flex-col lg:flex-row gap-8">
                 <div className="flex-1 order-2 lg:order-1">
                   <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-lg font-medium">Available Modules</h2>
+                    <h2 className="text-lg font-medium">Módulos Disponíveis</h2>
                     <button
                       onClick={handleReset}
                       className="inline-flex items-center text-sm text-muted-foreground hover:text-nuvme-blue transition-colors"
                     >
                       <Icon name="RotateCcw" className="w-3 h-3 mr-1" />
-                      Reset
+                      Reiniciar
                     </button>
                   </div>
 
@@ -205,7 +205,7 @@ const Index = () => {
               />
             </div>
             <p className="mt-4 text-muted-foreground">
-              Select a mission to begin your price calculation
+              Selecione uma missão para começar seu cálculo de preço
             </p>
           </motion.div>
         )}

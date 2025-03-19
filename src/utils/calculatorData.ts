@@ -13,7 +13,8 @@ export interface Module {
   name: string;
   description: string;
   missions: MissionType[];
-  basePrice: number;
+  horasFixas: number;
+  custoBase: number;
   variableFactor: number;
   variableUnit: string;
   minValue?: number;
@@ -30,32 +31,32 @@ export interface SelectedModule {
 export const missions: Mission[] = [
   {
     id: 'modernization',
-    name: 'Modernization',
-    description: 'Modernize your infrastructure and applications',
+    name: 'Modernização',
+    description: 'Modernize sua infraestrutura e aplicações',
     icon: 'refresh-cw'
   },
   {
     id: 'security',
-    name: 'Security',
-    description: 'Enhance your security posture and compliance',
+    name: 'Segurança',
+    description: 'Melhore sua postura de segurança e conformidade',
     icon: 'shield'
   },
   {
     id: 'migration',
-    name: 'Migration',
-    description: 'Migrate your workloads to the cloud',
+    name: 'Migração',
+    description: 'Migre suas cargas de trabalho para a nuvem',
     icon: 'move'
   },
   {
     id: 'finops',
     name: 'FinOps',
-    description: 'Optimize your cloud costs and spending',
+    description: 'Otimize seus custos e gastos na nuvem',
     icon: 'trending-down'
   },
   {
     id: 'nextgen',
     name: 'NextGen',
-    description: 'Implement next-generation technologies',
+    description: 'Implemente tecnologias de próxima geração',
     icon: 'zap'
   }
 ];
@@ -64,11 +65,12 @@ export const missions: Mission[] = [
 export const modules: Module[] = [
   {
     id: 'cicd',
-    name: 'CI/CD Implementation',
-    description: 'Continuous Integration and Delivery pipeline setup',
+    name: 'CI/CD',
+    description: 'Implementação de pipeline de Integração e Entrega Contínua',
     missions: ['modernization', 'nextgen'],
-    basePrice: 15000,
-    variableFactor: 20,
+    horasFixas: 18,
+    custoBase: 5400,
+    variableFactor: 4,
     variableUnit: 'pipelines',
     minValue: 1,
     maxValue: 50,
@@ -76,47 +78,51 @@ export const modules: Module[] = [
   },
   {
     id: 'kubernetes',
-    name: 'Kubernetes Setup',
-    description: 'Kubernetes cluster configuration and deployment',
+    name: 'Kubernetes',
+    description: 'Configuração e implantação de cluster Kubernetes',
     missions: ['modernization', 'migration', 'nextgen'],
-    basePrice: 25000,
-    variableFactor: 40,
+    horasFixas: 24,
+    custoBase: 7200,
+    variableFactor: 18,
     variableUnit: 'clusters',
     minValue: 1,
     maxValue: 20,
     defaultValue: 3
   },
   {
-    id: 'gitops',
-    name: 'GitOps Implementation',
-    description: 'GitOps workflow setup and configuration',
-    missions: ['modernization', 'security', 'nextgen'],
-    basePrice: 18000,
-    variableFactor: 15,
-    variableUnit: 'repositories',
-    minValue: 1,
-    maxValue: 50,
-    defaultValue: 10
-  },
-  {
     id: 'database',
-    name: 'Database Migration',
-    description: 'Database migration and optimization',
+    name: 'Database',
+    description: 'Migração e otimização de banco de dados',
     missions: ['migration', 'modernization'],
-    basePrice: 22000,
-    variableFactor: 30,
-    variableUnit: 'databases',
+    horasFixas: 20,
+    custoBase: 6000,
+    variableFactor: 6,
+    variableUnit: 'bancos extras',
     minValue: 1,
     maxValue: 30,
     defaultValue: 5
   },
   {
+    id: 'gitops',
+    name: 'GitOps',
+    description: 'Configuração de fluxo de trabalho GitOps',
+    missions: ['modernization', 'security', 'nextgen'],
+    horasFixas: 15,
+    custoBase: 4500,
+    variableFactor: 4,
+    variableUnit: 'repositórios extras',
+    minValue: 1,
+    maxValue: 50,
+    defaultValue: 10
+  },
+  {
     id: 'containerization',
-    name: 'Application Containerization',
-    description: 'Containerize existing applications',
+    name: 'Conteinerização',
+    description: 'Conteinerização de aplicações existentes',
     missions: ['modernization', 'migration'],
-    basePrice: 12000,
-    variableFactor: 25,
+    horasFixas: 20,
+    custoBase: 6000,
+    variableFactor: 6,
     variableUnit: 'APIs',
     minValue: 1,
     maxValue: 100,
@@ -124,60 +130,65 @@ export const modules: Module[] = [
   },
   {
     id: 'karpenter',
-    name: 'Karpenter Implementation',
-    description: 'Kubernetes autoscaling with Karpenter',
-    missions: ['finops', 'nextgen'],
-    basePrice: 15000,
-    variableFactor: 18,
-    variableUnit: 'deployments',
+    name: 'Karpenter',
+    description: 'Autoescalonamento do Kubernetes com Karpenter',
+    missions: ['finops', 'nextgen', 'modernization'],
+    horasFixas: 12,
+    custoBase: 3600,
+    variableFactor: 1,
+    variableUnit: 'Deployments/APIs',
     minValue: 1,
     maxValue: 50,
     defaultValue: 8
   },
   {
     id: 'security_audit',
-    name: 'Security Audit',
-    description: 'Comprehensive security assessment',
+    name: 'Auditoria de Segurança',
+    description: 'Avaliação abrangente de segurança',
     missions: ['security'],
-    basePrice: 20000,
+    horasFixas: 20,
+    custoBase: 6000,
     variableFactor: 10,
-    variableUnit: 'applications',
+    variableUnit: 'aplicações',
     minValue: 1,
     maxValue: 50,
     defaultValue: 5
   },
   {
     id: 'cost_optimization',
-    name: 'Cost Optimization',
-    description: 'Cloud cost analysis and optimization',
+    name: 'Otimização de Custos',
+    description: 'Análise e otimização de custos na nuvem',
     missions: ['finops'],
-    basePrice: 18000,
+    horasFixas: 18,
+    custoBase: 5400,
     variableFactor: 8,
-    variableUnit: 'accounts',
+    variableUnit: 'contas',
     minValue: 1,
     maxValue: 20,
     defaultValue: 3
   },
   {
     id: 'devops_training',
-    name: 'DevOps Training',
-    description: 'Team training on DevOps practices',
+    name: 'Treinamento DevOps',
+    description: 'Treinamento de equipe em práticas DevOps',
     missions: ['modernization', 'nextgen'],
-    basePrice: 10000,
-    variableFactor: 50,
-    variableUnit: 'participants',
+    horasFixas: 10,
+    custoBase: 3000,
+    variableFactor: 5,
+    variableUnit: 'participantes',
     minValue: 5,
     maxValue: 50,
     defaultValue: 10
   },
   {
     id: 'cloud_migration',
-    name: 'Cloud Migration',
-    description: 'Migrate workloads to the cloud',
+    name: 'Migração para Nuvem',
+    description: 'Migrar cargas de trabalho para a nuvem',
     missions: ['migration'],
-    basePrice: 30000,
+    horasFixas: 30,
+    custoBase: 9000,
     variableFactor: 35,
-    variableUnit: 'applications',
+    variableUnit: 'aplicações',
     minValue: 1,
     maxValue: 50,
     defaultValue: 5
@@ -189,7 +200,7 @@ export const HOURLY_RATE = 300;
 export const MARGIN_PERCENTAGE = 0.1; // 10%
 
 export const calculateModuleCost = (module: Module, quantity: number): number => {
-  return (module.basePrice + module.variableFactor * quantity) * HOURLY_RATE * (1 + MARGIN_PERCENTAGE);
+  return module.custoBase + (module.variableFactor * quantity * HOURLY_RATE);
 };
 
 export const formatCurrency = (value: number): string => {

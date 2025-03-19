@@ -53,7 +53,7 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
           <div className="w-8 h-8 rounded-full bg-nuvme-light-blue flex items-center justify-center mr-3">
             <Icon name={selectedMission.icon} className="w-4 h-4 text-nuvme-blue" />
           </div>
-          <h3 className="text-lg font-medium">{selectedMission.name} Mission</h3>
+          <h3 className="text-lg font-medium">Missão {selectedMission.name}</h3>
         </div>
 
         <Separator className="mb-4" />
@@ -77,7 +77,7 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
                 </p>
               </div>
               <div className="text-sm font-medium">
-                {formatCurrency((selected.module.basePrice + selected.module.variableFactor * selected.quantity) * HOURLY_RATE)}
+                {formatCurrency(calculateModuleCost(selected.module, selected.quantity))}
               </div>
             </motion.div>
           ))}
@@ -93,7 +93,7 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
             />
           </div>
           <div className="flex justify-between items-center text-sm">
-            <span className="text-muted-foreground">Margin ({MARGIN_PERCENTAGE * 100}%)</span>
+            <span className="text-muted-foreground">Margem ({MARGIN_PERCENTAGE * 100}%)</span>
             <AnimatedNumber 
               value={totalPrice - (totalPrice / (1 + MARGIN_PERCENTAGE))} 
               formatter={formatPrice} 
@@ -104,7 +104,7 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
 
         <div className="mt-4 pt-3 border-t border-border">
           <div className="flex justify-between items-center">
-            <span className="font-medium">Total Estimated Price</span>
+            <span className="font-medium">Preço Total Estimado</span>
             <AnimatedNumber 
               value={totalPrice} 
               formatter={formatPrice} 
@@ -113,7 +113,7 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
             />
           </div>
           <p className="text-xs text-muted-foreground mt-1">
-            Based on R${HOURLY_RATE}/hour standard rate
+            Baseado na taxa padrão de R${HOURLY_RATE}/hora
           </p>
         </div>
       </motion.div>
