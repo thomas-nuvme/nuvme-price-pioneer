@@ -56,10 +56,10 @@ const securityServices = [
 // Definição dos módulos
 export const modules: Module[] = [
   // Missão Modernização
-  { id: 'cicd', name: 'CI/CD', description: 'Pipeline de Integração Contínua', missions: ['modernization'], horasFixas: 18, custoBase: 5400, variableFactor: 4, variableUnit: 'pipelines', icon: 'GitBranch' },
-  { id: 'kubernetes', name: 'Kubernetes', description: 'Configuração de Cluster Kubernetes', missions: ['modernization'], horasFixas: 24, custoBase: 7200, variableFactor: 18, variableUnit: 'clusters', icon: 'Ship' },
-  { id: 'database', name: 'Database', description: 'Otimização e Migração de Banco de Dados', missions: ['modernization'], horasFixas: 20, custoBase: 6000, variableFactor: 6, variableUnit: 'bancos extras', icon: 'Database' },
-  { id: 'gitops', name: 'GitOps', description: 'Automação de deploy com GitOps', missions: ['modernization'], horasFixas: 15, custoBase: 4500, variableFactor: 4, variableUnit: 'repositórios extras', icon: 'GitMerge' },
+  { id: 'cicd', name: 'CI/CD', description: 'Pipeline de Integração Contínua', missions: ['modernization'], horasFixas: 18, custoBase: 5400, variableFactor: 4, variableUnit: 'Pipelines', icon: 'GitBranch' },
+  { id: 'kubernetes', name: 'Kubernetes', description: 'Configuração de Cluster Kubernetes', missions: ['modernization'], horasFixas: 24, custoBase: 7200, variableFactor: 18, variableUnit: 'Clusters', icon: 'Ship' },
+  { id: 'database', name: 'Database', description: 'Otimização e Migração de Banco de Dados', missions: ['modernization'], horasFixas: 20, custoBase: 6000, variableFactor: 6, variableUnit: 'Bancos de Dados', icon: 'Database' },
+  { id: 'gitops', name: 'GitOps', description: 'Automação de deploy com GitOps', missions: ['modernization'], horasFixas: 15, custoBase: 4500, variableFactor: 4, variableUnit: 'Repositórios', icon: 'GitMerge' },
   { id: 'containerization', name: 'Conteinerização', description: 'Transformação de aplicações para containers', missions: ['modernization'], horasFixas: 20, custoBase: 6000, variableFactor: 6, variableUnit: 'APIs', icon: 'Package' },
   { id: 'karpenter', name: 'Karpenter', description: 'Autoescalonamento com Karpenter', missions: ['modernization'], horasFixas: 12, custoBase: 5600, variableFactor: 1, variableUnit: 'Deployments/APIs', icon: 'BarChart3' },
 
@@ -79,10 +79,10 @@ export const modules: Module[] = [
   { id: 'finops_avancado', name: 'FinOps Avançado', description: 'Gestão avançada de custos na nuvem', missions: ['finops'], horasFixas: 18, custoBase: 18500, icon: 'BarChart4' },
 
   // Missão NextGen
-  { id: 'observability', name: 'Observabilidade', description: 'Monitoramento e Logs avançados', missions: ['nextgen'], horasFixas: 15, custoBase: 4500, icon: 'LineChart' },
-  { id: 'ia', name: 'Inteligência Artificial', description: 'Implantação de soluções de IA', missions: ['nextgen'], horasFixas: 20, custoBase: 6000, icon: 'Brain' },
-  { id: 'ml', name: 'Machine Learning', description: 'Desenvolvimento de modelos de aprendizado', missions: ['nextgen'], horasFixas: 24, custoBase: 7200, icon: 'Network' },
-  { id: 'serverless', name: 'Serverless', description: 'Aplicações sem servidor', missions: ['nextgen'], horasFixas: 18, custoBase: 5400, icon: 'ServerCrash' },
+  { id: 'observability', name: 'Observabilidade', description: 'Monitoramento e Logs avançados', missions: ['nextgen'], horasFixas: 15, custoBase: 1500, icon: 'LineChart' },
+  { id: 'ia', name: 'Inteligência Artificial', description: 'Implantação de soluções de IA', missions: ['nextgen'], horasFixas: 20, custoBase: 20000, icon: 'Brain' },
+  { id: 'ml', name: 'Machine Learning', description: 'Desenvolvimento de modelos de aprendizado', missions: ['nextgen'], horasFixas: 24, custoBase: 3500, icon: 'Network' },
+  { id: 'serverless', name: 'Serverless', description: 'Aplicações sem servidor', missions: ['nextgen'], horasFixas: 18, custoBase: 2100, icon: 'ServerCrash' },
 
   // TakeOff (pode ser adicionado a todas as missões)
   { id: 'arquitetura', name: 'Arquitetura', description: 'Definição de arquitetura otimizada', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 12, custoBase: 3600, icon: 'Blocks' },
