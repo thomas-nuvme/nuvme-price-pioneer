@@ -15,6 +15,7 @@ const PlanQuiz = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
   const [selectedOptions, setSelectedOptions] = useState<Record<string, string>>({});
   const [finalPlan, setFinalPlan] = useState<Plan | null>(null);
+  const [selectedPlanTab, setSelectedPlanTab] = useState<PlanType | null>(null);
   const [upgradeRecommendation, setUpgradeRecommendation] = useState<{ 
     suggest: boolean, 
     upgrade: PlanType, 
@@ -28,6 +29,7 @@ const PlanQuiz = () => {
       const recommendedPlanId = getPlanRecommendation(selectedOptions);
       const plan = plans.find(p => p.id === recommendedPlanId) || null;
       setFinalPlan(plan);
+      setSelectedPlanTab(recommendedPlanId);
       
       // Check if upgrade suggestion is applicable
       const upgradeSuggestion = suggestUpgrade(selectedOptions, recommendedPlanId);
@@ -60,6 +62,7 @@ const PlanQuiz = () => {
     setCurrentQuestionIndex(0);
     setSelectedOptions({});
     setFinalPlan(null);
+    setSelectedPlanTab(null);
     setUpgradeRecommendation(null);
     setMode("quiz");
   };
@@ -68,6 +71,7 @@ const PlanQuiz = () => {
     if (upgradeRecommendation) {
       const upgradedPlan = plans.find(p => p.id === upgradeRecommendation.upgrade) || null;
       setFinalPlan(upgradedPlan);
+      setSelectedPlanTab(upgradeRecommendation.upgrade);
       setUpgradeRecommendation(null);
     }
   };
@@ -114,7 +118,26 @@ const PlanQuiz = () => {
     }
   };
 
+  // Get plan recommendations for a specific answer
+  const getPlanRecommendationsForAnswer = (questionId: string, optionId: string): string => {
+    const question = questions.find(q => q.id === questionId);
+    if (!question) return '';
+    
+    const option = question.options.find(o => o.id === optionId);
+    if (!option) return '';
+    
+    return option.plans.map(planId => {
+      const plan = plans.find(p => p.id === planId);
+      return plan?.name || '';
+    }).join(' ou ');
+  };
+
   if (mode === "result" && finalPlan) {
+    // We'll always show the currently selected plan details
+    const displayPlan = selectedPlanTab 
+      ? plans.find(p => p.id === selectedPlanTab) || finalPlan 
+      : finalPlan;
+    
     return (
       <motion.div
         key="result"
@@ -122,7 +145,7 @@ const PlanQuiz = () => {
         animate="visible"
         exit="exit"
         variants={containerVariants}
-        className="max-w-4xl mx-auto space-y-6"
+        className="max-w-4xl mx-auto space-y-6 my-12"
       >
         <Card className="border-t-4" style={{ borderTopColor: finalPlan.color }}>
           <CardHeader>
@@ -153,98 +176,105 @@ const PlanQuiz = () => {
               </div>
             )}
             
-            <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-              {plans.map(plan => (
-                <Card 
-                  key={plan.id} 
-                  className={`border shadow-sm ${plan.id === finalPlan.id ? 'ring-2 ring-primary shadow-md' : ''}`}
-                >
-                  <CardHeader className={`${plan.tailwindColor} ${plan.textColor} rounded-t-lg py-3`}>
-                    <CardTitle className="flex items-center gap-2 text-lg">
+            {/* Plan selection tabs */}
+            <Tabs 
+              value={selectedPlanTab || finalPlan.id} 
+              onValueChange={(value) => setSelectedPlanTab(value as PlanType)}
+              className="w-full"
+            >
+              <TabsList className="grid grid-cols-4 w-full">
+                {plans.map(plan => (
+                  <TabsTrigger 
+                    key={plan.id} 
+                    value={plan.id}
+                    className={`${plan.id === finalPlan.id ? 'font-medium' : ''}`}
+                  >
+                    <div className="flex items-center gap-1">
                       <Icon name={getPlanIcon(plan.id)} className="w-4 h-4" />
-                      {plan.name}
-                    </CardTitle>
-                  </CardHeader>
-                  <CardContent className="pt-3 pb-3 text-xs">
-                    <p>{plan.description}</p>
-                    {plan.id === finalPlan.id && (
-                      <Badge variant="outline" className="mt-2 bg-primary/10">Recomendado</Badge>
-                    )}
-                  </CardContent>
-                </Card>
+                      <span>{plan.name}</span>
+                      {plan.id === finalPlan.id && (
+                        <Badge variant="outline" className="ml-1 px-1 py-0 text-xs bg-primary/10">
+                          Recomendado
+                        </Badge>
+                      )}
+                    </div>
+                  </TabsTrigger>
+                ))}
+              </TabsList>
+              
+              {plans.map(plan => (
+                <TabsContent key={plan.id} value={plan.id} className="pt-4">
+                  <Card>
+                    <CardHeader className={`${plan.tailwindColor} ${plan.textColor} rounded-t-lg`}>
+                      <CardTitle className="flex items-center gap-2">
+                        <Icon name={getPlanIcon(plan.id)} className="w-5 h-5" />
+                        {getPlanEmoji(plan.id)} {plan.name} – {plan.tagline}
+                      </CardTitle>
+                      <CardDescription className={plan.textColor}>
+                        {plan.description}
+                      </CardDescription>
+                    </CardHeader>
+                    
+                    <CardContent className="pt-6 pb-4 space-y-6">
+                      <div>
+                        <h3 className="text-lg font-medium flex items-center gap-2 mb-3">
+                          <Icon name="Check" className="w-5 h-5 text-green-500" />
+                          O que está incluso?
+                        </h3>
+                        <ul className="space-y-2 ml-7">
+                          {plan.included.map((item, idx) => (
+                            <li key={idx} className="flex items-start gap-2 text-sm">
+                              <span className="text-green-500 font-bold inline-block mt-0.5">✓</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div>
+                        <h3 className="text-lg font-medium flex items-center gap-2 mb-3">
+                          <Icon name="X" className="w-5 h-5 text-red-500" />
+                          O que NÃO está incluso?
+                        </h3>
+                        <ul className="space-y-2 ml-7">
+                          {plan.notIncluded.map((item, idx) => (
+                            <li key={idx} className="flex items-start gap-2 text-sm">
+                              <span className="text-red-500 font-bold inline-block mt-0.5">✗</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div>
+                        <h3 className="text-lg font-medium flex items-center gap-2 mb-3">
+                          <Icon name="Target" className="w-5 h-5 text-blue-500" />
+                          Para quem é o {plan.name}?
+                        </h3>
+                        <ul className="space-y-2 ml-7">
+                          {plan.forWho.map((item, idx) => (
+                            <li key={idx} className="flex items-start gap-2 text-sm">
+                              <span className="text-blue-500 font-bold inline-block mt-0.5">•</span>
+                              <span>{item}</span>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                      
+                      <div>
+                        <h3 className="text-lg font-medium flex items-center gap-2 mb-3">
+                          <Icon name="Lightbulb" className="w-5 h-5 text-yellow-500" />
+                          Exemplo de cliente
+                        </h3>
+                        <p className="text-sm ml-7">{plan.example}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </TabsContent>
               ))}
-            </div>
-
+            </Tabs>
+            
             <Accordion type="single" collapsible className="w-full">
-              <AccordionItem value="what-included">
-                <AccordionTrigger className="text-lg font-medium">
-                  <div className="flex items-center gap-2">
-                    <Icon name="Check" className="w-5 h-5 text-green-500" />
-                    O que está incluso?
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <ul className="space-y-2 pl-7">
-                    {finalPlan.included.map((item, index) => (
-                      <li key={index} className="flex items-start gap-2 text-sm">
-                        <span className="text-green-500 font-bold inline-block mt-0.5">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="what-not-included">
-                <AccordionTrigger className="text-lg font-medium">
-                  <div className="flex items-center gap-2">
-                    <Icon name="X" className="w-5 h-5 text-red-500" />
-                    O que NÃO está incluso?
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <ul className="space-y-2 pl-7">
-                    {finalPlan.notIncluded.map((item, index) => (
-                      <li key={index} className="flex items-start gap-2 text-sm">
-                        <span className="text-red-500 font-bold inline-block mt-0.5">✗</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="for-who">
-                <AccordionTrigger className="text-lg font-medium">
-                  <div className="flex items-center gap-2">
-                    <Icon name="Target" className="w-5 h-5 text-blue-500" />
-                    Para quem é o {finalPlan.name}?
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <ul className="space-y-2 pl-7">
-                    {finalPlan.forWho.map((item, index) => (
-                      <li key={index} className="flex items-start gap-2 text-sm">
-                        <span className="text-blue-500 font-bold inline-block mt-0.5">•</span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </AccordionContent>
-              </AccordionItem>
-              
-              <AccordionItem value="example">
-                <AccordionTrigger className="text-lg font-medium">
-                  <div className="flex items-center gap-2">
-                    <Icon name="Lightbulb" className="w-5 h-5 text-yellow-500" />
-                    Exemplo de cliente
-                  </div>
-                </AccordionTrigger>
-                <AccordionContent>
-                  <p className="pl-7 text-sm">{finalPlan.example}</p>
-                </AccordionContent>
-              </AccordionItem>
-              
               <AccordionItem value="answers">
                 <AccordionTrigger className="text-lg font-medium">
                   <div className="flex items-center gap-2">
@@ -257,10 +287,19 @@ const PlanQuiz = () => {
                     {Object.entries(selectedOptions).map(([questionId, optionId]) => {
                       const question = questions.find(q => q.id === questionId);
                       const option = question?.options.find(o => o.id === optionId);
+                      const planRecommendations = getPlanRecommendationsForAnswer(questionId, optionId);
+                      
                       return (
                         <div key={questionId} className="pl-7 border-l-2 border-indigo-100">
                           <p className="font-medium text-sm">{question?.text}</p>
-                          <p className="text-sm text-muted-foreground">{option?.text}</p>
+                          <div className="text-sm text-muted-foreground flex flex-col">
+                            <span>{option?.text}</span>
+                            {planRecommendations && (
+                              <span className="text-xs mt-1 text-indigo-600">
+                                [Recomendação: {planRecommendations}]
+                              </span>
+                            )}
+                          </div>
                         </div>
                       );
                     })}
@@ -270,12 +309,9 @@ const PlanQuiz = () => {
             </Accordion>
           </CardContent>
           
-          <CardFooter className="flex gap-3">
-            <Button onClick={handleReset} variant="outline" className="w-full">
+          <CardFooter className="flex justify-center">
+            <Button onClick={handleReset} variant="outline" className="w-full max-w-sm">
               Refazer Questionário
-            </Button>
-            <Button className="w-full">
-              Falar com um consultor
             </Button>
           </CardFooter>
         </Card>
@@ -290,7 +326,7 @@ const PlanQuiz = () => {
       animate="visible"
       exit="exit"
       variants={containerVariants}
-      className="max-w-3xl mx-auto"
+      className="max-w-3xl mx-auto my-12"
     >
       <Card>
         <CardHeader>

@@ -72,7 +72,8 @@ export const plans: Plan[] = [
     notIncluded: [
       'Acompanhamento estratégico estruturado → O foco é na estabilidade operacional, não na otimização contínua.',
       'Squad DevOps Dedicado → Para um time especializado continuamente melhorando seu ambiente, é necessário o Advanced.',
-      'FinOps Avançado → Análises detalhadas e otimizações estratégicas de custos só estão no Advanced.'
+      'FinOps Avançado → Análises detalhadas e otimizações estratégicas de custos só estão no Advanced.',
+      'Suporte via Slack → Atendimento via Slack só está disponível a partir do plano Advanced.'
     ],
     forWho: [
       'Empresas que não querem se preocupar com infraestrutura AWS e precisam de resolução ativa de problemas.',
@@ -285,7 +286,7 @@ export const questions: Question[] = [
         plans: ['advanced', 'premier'] 
       }
     ]
-  }
+  },
 ];
 
 export const getPlanRecommendation = (selectedOptions: Record<string, string>): PlanType => {
