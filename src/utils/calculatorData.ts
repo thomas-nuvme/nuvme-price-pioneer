@@ -71,8 +71,8 @@ export const modules: Module[] = [
   { id: 'conta_cofre', name: 'Conta Cofre', description: 'Gerenciamento seguro de credenciais', missions: ['security'], horasFixas: 12, custoBase: 3600, variableUnit: 'complexidade', hasComplexity: true, icon: 'KeyRound' },
 
   // Missão Migração
-  { id: 'on_premises', name: 'On Premises', description: 'Migração de infraestrutura local para nuvem', missions: ['migration'], horasFixas: 30, custoBase: 9000, variableFactor: 10, variableUnit: 'VMs extras', icon: 'Server' },
-  { id: 'cloud', name: 'Cloud', description: 'Migração entre clouds', missions: ['migration'], horasFixas: 25, custoBase: 7500, variableFactor: 8, variableUnit: 'workloads extras', icon: 'Cloud' },
+  { id: 'on_premises', name: 'On Premises', description: 'Migração de infraestrutura local para nuvem', missions: ['migration'], horasFixas: 30, custoBase: 9000, variableFactor: 10, variableUnit: 'VMs', icon: 'Server' },
+  { id: 'cloud', name: 'Cloud', description: 'Migração entre clouds', missions: ['migration'], horasFixas: 25, custoBase: 7500, variableFactor: 8, variableUnit: 'workloads', icon: 'Cloud' },
 
   // Missão FinOps
   { id: 'redução_custos', name: 'Redução de Custos', description: 'Análise e otimização de custos', missions: ['finops'], horasFixas: 12, custoBase: 6800, icon: 'PiggyBank' },
