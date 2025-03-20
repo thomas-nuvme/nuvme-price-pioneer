@@ -145,7 +145,7 @@ const Index = () => {
             className="mx-auto w-40 mb-4"
           />
           <h1 className="text-4xl md:text-5xl font-semibold text-nuvme-dark mb-4">
-            Calculadora de Preços Nuvme
+            Guia Nuvme
           </h1>
           <p className="text-lg text-nuvme-dark-gray max-w-3xl mx-auto">
             Selecione sua missão e módulos para obter um preço estimado para seu projeto
