@@ -10,6 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Separator } from "@/components/ui/separator";
 import { Badge } from "@/components/ui/badge";
+import { Link } from "react-router-dom";
 
 const PlanQuiz = () => {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState<number>(0);
@@ -147,6 +148,22 @@ const PlanQuiz = () => {
         variants={containerVariants}
         className="max-w-4xl mx-auto space-y-6 my-12"
       >
+        <div className="flex justify-between items-center mb-6">
+          <Link to="/">
+            <Button variant="outline" className="flex items-center gap-2">
+              <Icon name="ArrowLeft" className="w-4 h-4" />
+              Voltar para página inicial
+            </Button>
+          </Link>
+          <Link to="/">
+            <img 
+              src="src/components/images/nuvme-logo.png" 
+              alt="Nuvme Logo" 
+              className="w-40"
+            />
+          </Link>
+        </div>
+
         <Card className="border-t-4" style={{ borderTopColor: finalPlan.color }}>
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-2xl">
@@ -326,8 +343,18 @@ const PlanQuiz = () => {
       animate="visible"
       exit="exit"
       variants={containerVariants}
-      className="max-w-3xl mx-auto my-12"
+      className="max-w-3xl mx-auto my-12 px-4"
     >
+      <div className="flex justify-center mb-6">
+        <Link to="/">
+          <img 
+            src="src/components/images/nuvme-logo.png" 
+            alt="Nuvme Logo" 
+            className="w-40 mb-4"
+          />
+        </Link>
+      </div>
+      
       <Card>
         <CardHeader>
           <CardTitle>Quiz de Recomendação de Plano</CardTitle>

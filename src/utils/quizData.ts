@@ -293,7 +293,15 @@ export const getPlanRecommendation = (selectedOptions: Record<string, string>): 
   // Initialize with lowest tier plan
   let recommendedPlan: PlanType = 'together';
   
-  // For each answer, check if it requires a higher tier plan
+  // Count recommendations for each plan type
+  const planCounts: Record<PlanType, number> = {
+    'together': 0,
+    'essential': 0,
+    'advanced': 0,
+    'premier': 0
+  };
+  
+  // For each answer, check what plans it's compatible with
   Object.entries(selectedOptions).forEach(([questionId, optionId]) => {
     const question = questions.find(q => q.id === questionId);
     if (!question) return;
@@ -301,23 +309,51 @@ export const getPlanRecommendation = (selectedOptions: Record<string, string>): 
     const option = question.options.find(o => o.id === optionId);
     if (!option) return;
     
-    // If this answer suggests a higher plan than current recommendation, upgrade the recommendation
-    // Order of plans from lowest to highest: together, essential, advanced, premier
-    const optionPlans = option.plans;
-    
-    // Check if we need to upgrade
-    if (optionPlans.includes('premier')) {
-      recommendedPlan = 'premier';
-    } else if (optionPlans.includes('advanced') && recommendedPlan !== 'premier') {
-      recommendedPlan = 'advanced';
-    } else if (optionPlans.includes('essential') && recommendedPlan !== 'premier' && recommendedPlan !== 'advanced') {
-      recommendedPlan = 'essential';
-    }
-    // No need to downgrade to 'together' since it's our starting point
+    // Increment count for each compatible plan
+    option.plans.forEach(plan => {
+      planCounts[plan]++;
+    });
   });
+  
+  // If a feature is only available in Essential and not in Together, we need Essential
+  if (planCounts['essential'] > 0 && !optionsCompatibleWithAllPlans(selectedOptions, ['together'])) {
+    recommendedPlan = 'essential';
+  }
+  
+  // If a feature is only available in Advanced and not in Essential or Together, we need Advanced
+  if (planCounts['advanced'] > 0 && !optionsCompatibleWithAllPlans(selectedOptions, ['together', 'essential'])) {
+    recommendedPlan = 'advanced';
+  }
+  
+  // If a feature is only available in Premier, we need Premier
+  if (planCounts['premier'] > 0 && !optionsCompatibleWithAllPlans(selectedOptions, ['together', 'essential', 'advanced'])) {
+    recommendedPlan = 'premier';
+  }
   
   return recommendedPlan;
 };
+
+// Helper function to check if all selected options are compatible with at least one of the provided plans
+function optionsCompatibleWithAllPlans(selectedOptions: Record<string, string>, planTypes: PlanType[]): boolean {
+  for (const [questionId, optionId] of Object.entries(selectedOptions)) {
+    const question = questions.find(q => q.id === questionId);
+    if (!question) continue;
+    
+    const option = question.options.find(o => o.id === optionId);
+    if (!option) continue;
+    
+    // Check if this option is compatible with at least one of the provided plans
+    const isCompatible = option.plans.some(plan => planTypes.includes(plan));
+    
+    // If any option is not compatible with the provided plans, return false
+    if (!isCompatible) {
+      return false;
+    }
+  }
+  
+  // All options are compatible with at least one of the provided plans
+  return true;
+}
 
 export const suggestUpgrade = (selectedOptions: Record<string, string>, recommendedPlan: PlanType): { suggest: boolean, upgrade: PlanType, reason: string } | null => {
   // If already at the highest tier (premier), no upgrade to suggest
