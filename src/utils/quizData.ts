@@ -166,17 +166,17 @@ export const questions: Question[] = [
     options: [
       { 
         id: 'yes', 
-        text: 'Sim, temos um time dedicado', 
-        plans: ['together'] 
+        text: 'Não, temos um time de Desenvolvedores que conhecem de Cloud', 
+        plans: ['together','essential'] 
       },
       { 
         id: 'partial', 
-        text: 'Sim, mas é pequeno e não cobre todas as necessidades', 
+        text: 'Sim, mas é pequeno ', 
         plans: ['essential', 'advanced'] 
       },
       { 
         id: 'no', 
-        text: 'Não, dependemos totalmente de parceiros para suporte e gestão da AWS', 
+        text: 'Sim, temos um time de DevOps, Cloud ou parceiro dedicado', 
         plans: ['advanced', 'premier'] 
       }
     ]
@@ -189,7 +189,7 @@ export const questions: Question[] = [
       { 
         id: 'none', 
         text: 'Não gerenciamos, pagamos as faturas sem análise detalhada', 
-        plans: ['together'] 
+        plans: ['together','essential'] 
       },
       { 
         id: 'partial', 
@@ -215,12 +215,12 @@ export const questions: Question[] = [
       },
       { 
         id: 'support', 
-        text: 'Quero suporte imediato para resolver incidentes', 
+        text: 'Quero suporte para resolver incidentes', 
         plans: ['essential'] 
       },
       { 
         id: 'proactive', 
-        text: 'Quero uma equipe dedicada para monitorar e corrigir problemas automaticamente', 
+        text: 'Quero uma equipe que vá agir de forma imediata para resolver incidentes', 
         plans: ['advanced', 'premier'] 
       }
     ]
@@ -238,7 +238,7 @@ export const questions: Question[] = [
       { 
         id: 'moderate', 
         text: 'Queremos explorar novas tecnologias, mas sem pressa', 
-        plans: ['advanced'] 
+        plans: ['essential','advanced'] 
       },
       { 
         id: 'continuous', 
