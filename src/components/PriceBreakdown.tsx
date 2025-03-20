@@ -13,11 +13,6 @@ interface PriceBreakdownProps {
   totalPrice: number;
 }
 
-// Adicionando a função calculateModuleCost diretamente neste componente
-const calculateModuleCost = (module: any, quantity: number): number => {
-  return module.custoBase + (module.variableFactor * quantity * HOURLY_RATE);
-};
-
 const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
   selectedMission,
   selectedModules,
@@ -28,6 +23,45 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
   }
 
   const formatPrice = (value: number) => formatCurrency(value);
+
+  const getModulePrice = (selected: SelectedModule): number => {
+    const { module, quantity, complexity, selectedServices } = selected;
+    
+    if (module.id === 'skyguard' && selectedServices && selectedServices.length > 0) {
+      return module.custoBase + (selectedServices.length * 5500);
+    }
+    
+    if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre'].includes(module.id) && complexity) {
+      let complexityFactor = 1;
+      switch (complexity) {
+        case 'easy': complexityFactor = 1; break;
+        case 'moderate': complexityFactor = 1.7; break;
+        case 'complex': complexityFactor = 2.9; break;
+      }
+      return module.custoBase * complexityFactor;
+    }
+    
+    // Handle standard calculation
+    return module.custoBase + (module.variableFactor ? module.variableFactor * quantity * HOURLY_RATE : 0);
+  };
+
+  const getModuleDetails = (selected: SelectedModule): string => {
+    const { module, quantity, complexity, selectedServices } = selected;
+    
+    if (module.id === 'skyguard' && selectedServices) {
+      return `${selectedServices.length} serviços`;
+    }
+    
+    if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre'].includes(module.id) && complexity) {
+      return complexity === 'easy' ? 'Fácil' : complexity === 'moderate' ? 'Moderado' : 'Complexo';
+    }
+    
+    if (module.variableFactor && module.variableUnit) {
+      return `${quantity} ${module.variableUnit}`;
+    }
+    
+    return '';
+  };
 
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -77,12 +111,14 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
                 <p className="text-sm font-medium">
                   {selected.module.name}
                 </p>
-                <p className="text-xs text-muted-foreground">
-                  {selected.quantity} {selected.module.variableUnit}
-                </p>
+                {getModuleDetails(selected) && (
+                  <p className="text-xs text-muted-foreground">
+                    {getModuleDetails(selected)}
+                  </p>
+                )}
               </div>
               <div className="text-sm font-medium">
-                {formatCurrency(calculateModuleCost(selected.module, selected.quantity))}
+                {formatCurrency(getModulePrice(selected))}
               </div>
             </motion.div>
           ))}

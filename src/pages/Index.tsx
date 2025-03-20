@@ -1,10 +1,10 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   MissionType, 
   Mission, 
   Module, 
-  SelectedModule, 
   missions, 
   modules, 
   calculateModuleCost 
@@ -14,14 +14,20 @@ import ModuleCard from "@/components/ModuleCard";
 import PriceBreakdown from "@/components/PriceBreakdown";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { Icon } from "@/components/Icon";
-import { useToast } from "@/components/ui/use-toast";
+
+// Define a new type for selected modules
+interface SelectedModule {
+  module: Module;
+  quantity: number;
+  complexity?: 'easy' | 'moderate' | 'complex';
+  selectedServices?: string[];
+}
 
 const Index = () => {
   const [selectedMission, setSelectedMission] = useState<MissionType | null>(null);
   const [selectedModules, setSelectedModules] = useState<SelectedModule[]>([]);
   const [filteredModules, setFilteredModules] = useState<Module[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
-  const { toast } = useToast();
 
   useEffect(() => {
     if (selectedMission) {
@@ -41,59 +47,63 @@ const Index = () => {
   }, [selectedMission]);
 
   useEffect(() => {
-    const newTotalPrice = selectedModules.reduce(
-      (total, selected) => total + calculateModuleCost(selected.module, selected.quantity),
-      0
-    );
+    let newTotalPrice = 0;
+    
+    for (const selected of selectedModules) {
+      if (selected.module.id === 'skyguard' && selected.selectedServices) {
+        // SkyGuard with services
+        newTotalPrice += selected.module.custoBase + (selected.selectedServices.length * 5500);
+      } else if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre'].includes(selected.module.id) && selected.complexity) {
+        // Security modules with complexity
+        let complexityFactor = 1;
+        switch (selected.complexity) {
+          case 'easy': complexityFactor = 1; break;
+          case 'moderate': complexityFactor = 1.7; break;
+          case 'complex': complexityFactor = 2.9; break;
+        }
+        newTotalPrice += selected.module.custoBase * complexityFactor;
+      } else {
+        // Standard modules
+        newTotalPrice += calculateModuleCost(selected.module, selected.quantity);
+      }
+    }
+    
     setTotalPrice(newTotalPrice);
   }, [selectedModules]);
 
   const handleSelectMission = (mission: MissionType) => {
     setSelectedMission(mission);
-    
-    toast({
-      title: "Missão selecionada",
-      description: `Missão ${missions.find(m => m.id === mission)?.name} selecionada.`,
-    });
   };
 
-  const handleSelectModule = (module: Module, quantity: number) => {
+  const handleSelectModule = (
+    module: Module, 
+    quantity: number, 
+    complexity?: 'easy' | 'moderate' | 'complex',
+    selectedServices?: string[]
+  ) => {
     setSelectedModules((prev) => {
       const exists = prev.find((item) => item.module.id === module.id);
       if (exists) {
         return prev.map((item) =>
-          item.module.id === module.id ? { ...item, quantity } : item
+          item.module.id === module.id 
+            ? { ...item, quantity, complexity, selectedServices } 
+            : item
         );
       } else {
-        toast({
-          title: "Módulo adicionado",
-          description: `${module.name} adicionado ao seu orçamento.`,
-        });
-        return [...prev, { module, quantity }];
+        return [...prev, { module, quantity, complexity, selectedServices }];
       }
     });
   };
 
   const handleDeselectModule = (moduleId: string) => {
-    setSelectedModules((prev) => {
-      const moduleToRemove = prev.find(item => item.module.id === moduleId);
-      if (moduleToRemove) {
-        toast({
-          title: "Módulo removido",
-          description: `${moduleToRemove.module.name} removido do seu orçamento.`,
-        });
-      }
-      return prev.filter((item) => item.module.id !== moduleId);
-    });
+    setSelectedModules((prev) => 
+      prev.filter((item) => item.module.id !== moduleId)
+    );
   };
 
   const handleReset = () => {
     setSelectedMission(null);
     setSelectedModules([]);
-    toast({
-      title: "Calculadora reiniciada",
-      description: "Todas as seleções foram limpas.",
-    });
   };
 
   const getCurrentMission = (): Mission | null => {
@@ -101,6 +111,7 @@ const Index = () => {
     return missions.find((m) => m.id === selectedMission) || null;
   };
 
+  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
