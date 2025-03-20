@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -14,6 +13,8 @@ import ModuleCard from "@/components/ModuleCard";
 import PriceBreakdown from "@/components/PriceBreakdown";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { Icon } from "@/components/Icon";
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
 
 // Define a new type for selected modules
 interface SelectedModule {
@@ -149,6 +150,18 @@ const Index = () => {
           <p className="text-lg text-nuvme-dark-gray max-w-3xl mx-auto">
             Selecione sua missão e módulos para obter um preço estimado para seu projeto
           </p>
+          
+          <motion.div 
+            variants={itemVariants}
+            className="mt-6"
+          >
+            <Link to="/plano">
+              <Button className="bg-nuvme-teal hover:bg-nuvme-teal/90">
+                <Icon name="HelpCircle" className="w-4 h-4 mr-2" />
+                Ajuda para escolher seu plano mensal
+              </Button>
+            </Link>
+          </motion.div>
         </motion.div>
 
         <motion.div variants={itemVariants}>
