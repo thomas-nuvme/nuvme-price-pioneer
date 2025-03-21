@@ -21,7 +21,7 @@ const MissionSelector: React.FC<MissionSelectorProps> = ({
   return (
     <div className="w-full">
       <h2 className="text-lg font-medium mb-4 text-center">Selecione sua missão</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+      <div className="flex flex-wrap justify-center gap-4">
         {filteredMissions.map((mission) => (
           <button
             key={mission.id}

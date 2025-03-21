@@ -22,7 +22,7 @@ const PlanQuiz = () => {
     upgrade: PlanType, 
     reason: string 
   } | null>(null);
-  const [mode, setMode] = useState<"quiz" | "result" | "edit">>("quiz");
+  const [mode, setMode] = useState<"quiz" | "result" | "edit">("quiz");
   const [editingQuestion, setEditingQuestion] = useState<string | null>(null);
 
   // When the final question is answered, show the result
@@ -507,7 +507,7 @@ const PlanQuiz = () => {
                     <div 
                       key={option.id}
                       className="flex items-center space-x-2 border rounded-lg p-4 hover:border-primary cursor-pointer"
-                      onClick={() => handleOptionSelect(currentQuestion.id, option.id)}
+                      onClick={() => handleOptionSelect(question.id, option.id)}
                     >
                       <RadioGroupItem value={option.id} id={option.id} />
                       <label htmlFor={option.id} className="flex-grow cursor-pointer">

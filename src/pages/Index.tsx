@@ -226,18 +226,6 @@ const Index = () => {
           <p className="text-lg text-nuvme-dark-gray max-w-3xl mx-auto">
             Selecione sua missão e módulos para obter um preço estimado para seu projeto
           </p>
-          
-          <motion.div 
-            variants={itemVariants}
-            className="mt-6"
-          >
-            <Link to="/plano">
-              <Button className="bg-nuvme-teal hover:bg-nuvme-teal/90">
-                <Icon name="HelpCircle" className="w-4 h-4 mr-2" />
-                Ajuda para escolher seu plano mensal
-              </Button>
-            </Link>
-          </motion.div>
         </motion.div>
 
         <motion.div variants={itemVariants}>
@@ -246,61 +234,6 @@ const Index = () => {
             selectedMission={selectedMission}
             onSelectMission={handleSelectMission}
           />
-        </motion.div>
-
-        {/* Monthly Plan Cards Section */}
-        <motion.div 
-          variants={itemVariants}
-          className="mt-16"
-        >
-          <h2 className="text-2xl font-semibold text-center mb-8">Nossos Planos Mensais</h2>
-          
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {monthlyPlans.map((plan) => (
-              <Card 
-                key={plan.id} 
-                className={`overflow-hidden hover:shadow-lg transition-all duration-300 ${plan.bgColor} border-t-4`} 
-                style={{ borderTopColor: plan.color }}
-              >
-                <CardHeader className="pb-2">
-                  <div className="flex justify-between items-center">
-                    <div className={`w-10 h-10 ${plan.iconBg} rounded-full flex items-center justify-center text-white`}>
-                      <Icon name={plan.icon} className="w-5 h-5" />
-                    </div>
-                    <span className="text-2xl">{plan.emoji}</span>
-                  </div>
-                  <CardTitle className="mt-3">{plan.name}</CardTitle>
-                  <CardDescription className="text-sm">{plan.description}</CardDescription>
-                </CardHeader>
-                <CardContent className="pt-0">
-                  <ul className="space-y-2 mt-4">
-                    {plan.highlights.map((highlight, idx) => (
-                      <li key={idx} className="flex items-start gap-2 text-sm">
-                        <span className="text-green-500 font-bold inline-block mt-0.5">✓</span>
-                        <span>{highlight}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </CardContent>
-                <CardFooter className="pt-2 flex-col items-stretch">
-                  <Link to="/plano" className="w-full">
-                    <Button variant="outline" className="w-full border-gray-300">
-                      Detalhes do plano
-                    </Button>
-                  </Link>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-          
-          <div className="flex justify-center mt-8">
-            <Link to="/plano">
-              <Button className="bg-nuvme-blue hover:bg-nuvme-blue/90 text-white">
-                <Icon name="Search" className="w-4 h-4 mr-2" />
-                Fazer quiz para descobrir seu plano ideal
-              </Button>
-            </Link>
-          </div>
         </motion.div>
 
         <AnimatePresence mode="wait">
@@ -368,6 +301,53 @@ const Index = () => {
             </p>
           </motion.div>
         )}
+
+        {/* Monthly Plan Cards Section */}
+        <motion.div 
+          variants={itemVariants}
+          className="mt-16"
+        >
+          <h2 className="text-2xl font-semibold text-center mb-8">Nossos Planos Mensais</h2>
+          
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {monthlyPlans.map((plan) => (
+              <Card 
+                key={plan.id} 
+                className={`overflow-hidden hover:shadow-lg transition-all duration-300 ${plan.bgColor} border-t-4`} 
+                style={{ borderTopColor: plan.color }}
+              >
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-center">
+                    <div className={`w-10 h-10 ${plan.iconBg} rounded-full flex items-center justify-center text-white`}>
+                      <Icon name={plan.icon} className="w-5 h-5" />
+                    </div>
+                    <span className="text-2xl">{plan.emoji}</span>
+                  </div>
+                  <CardTitle className="mt-3">{plan.name}</CardTitle>
+                  <CardDescription className="text-sm">{plan.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="pt-0">
+                  <ul className="space-y-2 mt-4">
+                    {plan.highlights.map((highlight, idx) => (
+                      <li key={idx} className="flex items-start gap-2 text-sm">
+                        <span className="text-green-500 font-bold inline-block mt-0.5">✓</span>
+                        <span>{highlight}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </CardContent>
+                <CardFooter className="pt-2 flex-col items-stretch">
+                  <Link to="/plano" className="w-full">
+                    <Button className="w-full bg-nuvme-blue hover:bg-nuvme-blue/90 text-white">
+                      <Icon name="Search" className="w-4 h-4 mr-2" />
+                      Fazer quiz para escolher plano
+                    </Button>
+                  </Link>
+                </CardFooter>
+              </Card>
+            ))}
+          </div>
+        </motion.div>
       </motion.div>
     </div>
   );
