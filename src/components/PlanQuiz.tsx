@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -507,7 +506,7 @@ const PlanQuiz = () => {
                     <div 
                       key={option.id}
                       className="flex items-center space-x-2 border rounded-lg p-4 hover:border-primary cursor-pointer"
-                      onClick={() => handleOptionSelect(question.id, option.id)}
+                      onClick={() => handleOptionSelect(currentQuestion.id, option.id)}
                     >
                       <RadioGroupItem value={option.id} id={option.id} />
                       <label htmlFor={option.id} className="flex-grow cursor-pointer">
