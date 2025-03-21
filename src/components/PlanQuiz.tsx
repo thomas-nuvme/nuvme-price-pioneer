@@ -22,29 +22,38 @@ const PlanQuiz = () => {
     upgrade: PlanType, 
     reason: string 
   } | null>(null);
-  const [mode, setMode] = useState<"quiz" | "result">("quiz");
+  const [mode, setMode] = useState<"quiz" | "result" | "edit">>("quiz");
+  const [editingQuestion, setEditingQuestion] = useState<string | null>(null);
 
   // When the final question is answered, show the result
   useEffect(() => {
-    if (Object.keys(selectedOptions).length === questions.length) {
-      const recommendedPlanId = getPlanRecommendation(selectedOptions);
-      const plan = plans.find(p => p.id === recommendedPlanId) || null;
-      setFinalPlan(plan);
-      setSelectedPlanTab(recommendedPlanId);
-      
-      // Check if upgrade suggestion is applicable
-      const upgradeSuggestion = suggestUpgrade(selectedOptions, recommendedPlanId);
-      setUpgradeRecommendation(upgradeSuggestion);
-      
-      setMode("result");
+    if (Object.keys(selectedOptions).length === questions.length && mode === "quiz") {
+      calculateRecommendation();
     }
-  }, [selectedOptions]);
+  }, [selectedOptions, mode]);
+
+  const calculateRecommendation = () => {
+    const recommendedPlanId = getPlanRecommendation(selectedOptions);
+    const plan = plans.find(p => p.id === recommendedPlanId) || null;
+    setFinalPlan(plan);
+    setSelectedPlanTab(recommendedPlanId);
+    
+    // Check if upgrade suggestion is applicable
+    const upgradeSuggestion = suggestUpgrade(selectedOptions, recommendedPlanId);
+    setUpgradeRecommendation(upgradeSuggestion);
+    
+    setMode("result");
+  };
 
   const handleOptionSelect = (questionId: string, optionId: string) => {
     setSelectedOptions(prev => ({
       ...prev,
       [questionId]: optionId
     }));
+    
+    if (mode === "edit") {
+      setEditingQuestion(null);
+    }
   };
 
   const handleNext = () => {
@@ -66,6 +75,7 @@ const PlanQuiz = () => {
     setSelectedPlanTab(null);
     setUpgradeRecommendation(null);
     setMode("quiz");
+    setEditingQuestion(null);
   };
 
   const handleUpgrade = () => {
@@ -75,6 +85,15 @@ const PlanQuiz = () => {
       setSelectedPlanTab(upgradeRecommendation.upgrade);
       setUpgradeRecommendation(null);
     }
+  };
+
+  const handleEditAnswer = (questionId: string) => {
+    setEditingQuestion(questionId);
+    setMode("edit");
+  };
+
+  const handleFinishEditing = () => {
+    calculateRecommendation();
   };
 
   const currentQuestion = questions[currentQuestionIndex];
@@ -113,7 +132,7 @@ const PlanQuiz = () => {
       case 'advanced':
         return '🔧';
       case 'premier':
-        return '🚀';
+        return '👑';
       default:
         return '✨';
     }
@@ -132,6 +151,84 @@ const PlanQuiz = () => {
       return plan?.name || '';
     }).join(' ou ');
   };
+
+  if (mode === "edit") {
+    const question = questions.find(q => q.id === editingQuestion);
+    if (!question) return null;
+
+    return (
+      <motion.div
+        key="edit"
+        initial="hidden"
+        animate="visible"
+        exit="exit"
+        variants={containerVariants}
+        className="max-w-3xl mx-auto my-12 px-4"
+      >
+        <div className="flex justify-center mb-6">
+          <Link to="/">
+            <img 
+              src="/src/components/images/nuvme-logo.png" 
+              alt="Nuvme Logo" 
+              className="w-40 mb-4"
+            />
+          </Link>
+        </div>
+        
+        <Card>
+          <CardHeader>
+            <CardTitle>Editar Resposta</CardTitle>
+            <CardDescription>
+              Atualize sua resposta para recalcular a recomendação de plano
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="space-y-2">
+                <h3 className="text-lg font-medium">{question.text}</h3>
+                {question.helpText && (
+                  <p className="text-sm text-muted-foreground">{question.helpText}</p>
+                )}
+              </div>
+              
+              <RadioGroup 
+                value={selectedOptions[question.id] || ""}
+                onValueChange={(value) => handleOptionSelect(question.id, value)}
+                className="space-y-3"
+              >
+                {question.options.map((option) => (
+                  <div 
+                    key={option.id}
+                    className="flex items-center space-x-2 border rounded-lg p-4 hover:border-primary cursor-pointer"
+                    onClick={() => handleOptionSelect(question.id, option.id)}
+                  >
+                    <RadioGroupItem value={option.id} id={option.id} />
+                    <label htmlFor={option.id} className="flex-grow cursor-pointer">
+                      {option.text}
+                    </label>
+                  </div>
+                ))}
+              </RadioGroup>
+            </div>
+          </CardContent>
+          <CardFooter className="flex justify-between">
+            <Button 
+              onClick={() => setMode("result")}
+              variant="outline"
+            >
+              Cancelar
+            </Button>
+            
+            <Button 
+              onClick={handleFinishEditing}
+            >
+              Concluir Edição
+            </Button>
+          </CardFooter>
+        </Card>
+      </motion.div>
+    );
+  }
 
   if (mode === "result" && finalPlan) {
     // We'll always show the currently selected plan details
@@ -157,7 +254,7 @@ const PlanQuiz = () => {
           </Link>
           <Link to="/">
             <img 
-              src="src/components/images/nuvme-logo.png" 
+              src="/src/components/images/nuvme-logo.png" 
               alt="Nuvme Logo" 
               className="w-40"
             />
@@ -307,16 +404,27 @@ const PlanQuiz = () => {
                       const planRecommendations = getPlanRecommendationsForAnswer(questionId, optionId);
                       
                       return (
-                        <div key={questionId} className="pl-7 border-l-2 border-indigo-100">
-                          <p className="font-medium text-sm">{question?.text}</p>
-                          <div className="text-sm text-muted-foreground flex flex-col">
-                            <span>{option?.text}</span>
-                            {planRecommendations && (
-                              <span className="text-xs mt-1 text-indigo-600">
-                                [Recomendação: {planRecommendations}]
-                              </span>
-                            )}
+                        <div key={questionId} className="pl-7 border-l-2 border-indigo-100 flex justify-between items-start">
+                          <div>
+                            <p className="font-medium text-sm">{question?.text}</p>
+                            <div className="text-sm text-muted-foreground flex flex-col">
+                              <span>{option?.text}</span>
+                              {planRecommendations && (
+                                <span className="text-xs mt-1 text-indigo-600">
+                                  [Recomendação: {planRecommendations}]
+                                </span>
+                              )}
+                            </div>
                           </div>
+                          <Button 
+                            variant="ghost" 
+                            size="sm" 
+                            onClick={() => handleEditAnswer(questionId)}
+                            className="text-xs"
+                          >
+                            <Icon name="Edit" className="w-3 h-3 mr-1" />
+                            Editar
+                          </Button>
                         </div>
                       );
                     })}
@@ -348,7 +456,7 @@ const PlanQuiz = () => {
       <div className="flex justify-center mb-6">
         <Link to="/">
           <img 
-            src="src/components/images/nuvme-logo.png" 
+            src="/src/components/images/nuvme-logo.png" 
             alt="Nuvme Logo" 
             className="w-40 mb-4"
           />

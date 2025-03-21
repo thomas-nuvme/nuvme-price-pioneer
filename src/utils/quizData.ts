@@ -287,6 +287,28 @@ export const questions: Question[] = [
       }
     ]
   },
+  {
+    id: 'communication',
+    text: 'Como você prefere se comunicar durante o suporte?',
+    helpText: 'Ajuda a definir o nível de personalização do atendimento necessário',
+    options: [
+      { 
+        id: 'tickets', 
+        text: 'Via Tickets (processo estruturado e documentado)', 
+        plans: ['together', 'essential'] 
+      },
+      { 
+        id: 'slack', 
+        text: 'Via Slack (comunicação ágil com a equipe técnica)', 
+        plans: ['advanced', 'premier'] 
+      },
+      { 
+        id: 'dedicated', 
+        text: 'Com um profissional dedicado (atendimento personalizado)', 
+        plans: ['premier'] 
+      }
+    ]
+  },
 ];
 
 export const getPlanRecommendation = (selectedOptions: Record<string, string>): PlanType => {
@@ -315,26 +337,25 @@ export const getPlanRecommendation = (selectedOptions: Record<string, string>): 
     });
   });
   
-  // If a feature is only available in Essential and not in Together, we need Essential
-  if (planCounts['essential'] > 0 && !optionsCompatibleWithAllPlans(selectedOptions, ['together'])) {
-    recommendedPlan = 'essential';
-  }
+  // Find the lowest plan that satisfies all requirements
+  const requiredPlans = getRequiredPlans(selectedOptions);
   
-  // If a feature is only available in Advanced and not in Essential or Together, we need Advanced
-  if (planCounts['advanced'] > 0 && !optionsCompatibleWithAllPlans(selectedOptions, ['together', 'essential'])) {
-    recommendedPlan = 'advanced';
-  }
-  
-  // If a feature is only available in Premier, we need Premier
-  if (planCounts['premier'] > 0 && !optionsCompatibleWithAllPlans(selectedOptions, ['together', 'essential', 'advanced'])) {
+  if (requiredPlans.includes('premier')) {
     recommendedPlan = 'premier';
+  } else if (requiredPlans.includes('advanced')) {
+    recommendedPlan = 'advanced';
+  } else if (requiredPlans.includes('essential')) {
+    recommendedPlan = 'essential';
   }
   
   return recommendedPlan;
 };
 
-// Helper function to check if all selected options are compatible with at least one of the provided plans
-function optionsCompatibleWithAllPlans(selectedOptions: Record<string, string>, planTypes: PlanType[]): boolean {
+// Helper function to get required plans based on user selections
+function getRequiredPlans(selectedOptions: Record<string, string>): PlanType[] {
+  const requiredPlans: PlanType[] = [];
+  
+  // For each answer, determine if there's a specific requirement
   for (const [questionId, optionId] of Object.entries(selectedOptions)) {
     const question = questions.find(q => q.id === questionId);
     if (!question) continue;
@@ -342,17 +363,21 @@ function optionsCompatibleWithAllPlans(selectedOptions: Record<string, string>, 
     const option = question.options.find(o => o.id === optionId);
     if (!option) continue;
     
-    // Check if this option is compatible with at least one of the provided plans
-    const isCompatible = option.plans.some(plan => planTypes.includes(plan));
-    
-    // If any option is not compatible with the provided plans, return false
-    if (!isCompatible) {
-      return false;
+    // If the option is only compatible with advanced or premier
+    if (option.plans.includes('premier') && !option.plans.includes('advanced') && 
+        !option.plans.includes('essential') && !option.plans.includes('together')) {
+      requiredPlans.push('premier');
+    }
+    else if (option.plans.includes('advanced') && !option.plans.includes('essential') && 
+        !option.plans.includes('together')) {
+      requiredPlans.push('advanced');
+    }
+    else if (option.plans.includes('essential') && !option.plans.includes('together')) {
+      requiredPlans.push('essential');
     }
   }
   
-  // All options are compatible with at least one of the provided plans
-  return true;
+  return requiredPlans;
 }
 
 export const suggestUpgrade = (selectedOptions: Record<string, string>, recommendedPlan: PlanType): { suggest: boolean, upgrade: PlanType, reason: string } | null => {

@@ -15,11 +15,14 @@ const MissionSelector: React.FC<MissionSelectorProps> = ({
   selectedMission,
   onSelectMission,
 }) => {
+  // Filter out the TakeOff mission
+  const filteredMissions = missions.filter(mission => mission.id !== "takeoff");
+  
   return (
     <div className="w-full">
-      <h2 className="text-lg font-medium mb-4">Selecione sua missão</h2>
-      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-5 gap-4">
-        {missions.map((mission) => (
+      <h2 className="text-lg font-medium mb-4 text-center">Selecione sua missão</h2>
+      <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        {filteredMissions.map((mission) => (
           <button
             key={mission.id}
             onClick={() => onSelectMission(mission.id)}
