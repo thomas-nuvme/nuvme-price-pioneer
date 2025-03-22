@@ -139,176 +139,194 @@ export const plans: Plan[] = [
 
 export const questions: Question[] = [
   {
-    id: 'company-size',
-    text: 'Qual o porte da sua empresa?',
-    helpText: 'Ajuda a entender a complexidade do ambiente e suporte necessário',
+    id: 'support-preference',
+    text: 'Como você prefere receber suporte técnico?',
+    helpText: 'Ajuda a definir o nível de suporte técnico necessário para sua empresa',
     options: [
       { 
-        id: 'small', 
-        text: 'Pequena (até 10 funcionários, 1-2 workloads na AWS)', 
-        plans: ['together', 'essential'] 
+        id: 'scheduled', 
+        text: 'Prefiro agendar reuniões com o time de especialistas quando necessário.', 
+        plans: ['together'] 
       },
       { 
-        id: 'medium', 
-        text: 'Média (10-50 funcionários, múltiplas aplicações na AWS, expansão em curso)', 
-        plans: ['essential', 'advanced'] 
+        id: 'continuous', 
+        text: 'Preciso de suporte técnico contínuo com resposta rápida a incidentes.', 
+        plans: ['essential'] 
       },
       { 
-        id: 'large', 
-        text: 'Grande (50+ funcionários, infraestrutura robusta e alta carga de trabalho na AWS)', 
-        plans: ['advanced', 'premier'] 
+        id: 'dedicated', 
+        text: 'Quero um time dedicado acompanhando e melhorando meu ambiente.', 
+        plans: ['advanced'] 
+      },
+      { 
+        id: 'personalized', 
+        text: 'Preciso de atendimento personalizado.', 
+        plans: ['premier'] 
       }
     ]
   },
   {
-    id: 'internal-team',
-    text: 'Sua empresa tem um time interno de cloud ou DevOps?',
-    helpText: 'Ajuda a definir se a empresa precisa de suporte ativo ou apenas acompanhamento estratégico',
+    id: 'company-size',
+    text: 'Qual o tamanho atual da sua empresa ou operação em nuvem?',
+    helpText: 'Ajuda a entender a complexidade do ambiente e suporte necessário',
     options: [
       { 
-        id: 'yes', 
-        text: 'Não, temos um time de Desenvolvedores que conhecem de Cloud', 
-        plans: ['together','essential'] 
+        id: 'small', 
+        text: 'Pequena ou em fase inicial. Temos poucos workloads na AWS.', 
+        plans: ['together'] 
       },
       { 
-        id: 'partial', 
-        text: 'Sim, mas é pequeno ', 
-        plans: ['essential', 'advanced'] 
+        id: 'medium', 
+        text: 'Porte médio, com infraestrutura em crescimento e equipe técnica enxuta.', 
+        plans: ['essential'] 
       },
       { 
-        id: 'no', 
-        text: 'Sim, temos um time de DevOps, Cloud ou parceiro dedicado', 
-        plans: ['advanced', 'premier'] 
+        id: 'large', 
+        text: 'Ambiente estável, com uso práticas DevOps e banco de dados.', 
+        plans: ['advanced'] 
+      },
+      { 
+        id: 'enterprise', 
+        text: 'Empresa grande com sistemas críticos e grande volume de acessos.', 
+        plans: ['premier'] 
+      }
+    ]
+  },
+  {
+    id: 'support-frequency',
+    text: 'Com que frequência sua equipe precisa de apoio técnico para resolver problemas?',
+    helpText: 'Ajuda a definir a regularidade de suporte técnico necessário',
+    options: [
+      { 
+        id: 'occasional', 
+        text: 'Apenas quando surgem dúvidas pontuais ou para alinhamentos estratégicos.', 
+        plans: ['together'] 
+      },
+      { 
+        id: 'weekly', 
+        text: 'Quase toda semana temos alguma demanda de suporte ou ajustes técnicos.', 
+        plans: ['essential'] 
+      },
+      { 
+        id: 'recurring', 
+        text: 'Temos demandas recorrentes e melhorias contínuas para executar.', 
+        plans: ['advanced'] 
+      },
+      { 
+        id: 'critical', 
+        text: 'Temos operações críticas que não podem parar. Suporte é essencial.', 
+        plans: ['premier'] 
+      }
+    ]
+  },
+  {
+    id: 'cloud-maturity',
+    text: 'Qual seu nível de maturidade em Cloud/DevOps?',
+    helpText: 'Ajuda a identificar o nível de suporte e melhoria contínua necessários',
+    options: [
+      { 
+        id: 'beginner', 
+        text: 'Estamos começando e queremos apoio para crescer com segurança.', 
+        plans: ['together'] 
+      },
+      { 
+        id: 'intermediate', 
+        text: 'Já usamos algumas práticas de DevOps e estamos estruturando melhor o ambiente.', 
+        plans: ['essential'] 
+      },
+      { 
+        id: 'advanced', 
+        text: 'Temos boas práticas e precisamos escalar e automatizar ainda mais.', 
+        plans: ['advanced'] 
+      },
+      { 
+        id: 'expert', 
+        text: 'Alta maturidade. Buscamos performance máxima, segurança e inovação contínua.', 
+        plans: ['premier'] 
       }
     ]
   },
   {
     id: 'cost-management',
-    text: 'Como sua empresa gerencia custos na AWS?',
-    helpText: 'Ajuda a determinar a necessidade de FinOps e otimização de custos',
+    text: 'Como você lida com custos e otimização financeira em cloud?',
+    helpText: 'Ajuda a determinar o nível de FinOps e otimização de custos necessários',
     options: [
       { 
-        id: 'none', 
-        text: 'Não gerenciamos, pagamos as faturas sem análise detalhada', 
-        plans: ['together','essential'] 
-      },
-      { 
-        id: 'partial', 
-        text: 'Fazemos algumas análises, mas sem um processo estruturado', 
-        plans: ['essential', 'advanced'] 
-      },
-      { 
-        id: 'complete', 
-        text: 'Temos um controle rígido de custos e buscamos otimização constante', 
-        plans: ['advanced', 'premier'] 
-      }
-    ]
-  },
-  {
-    id: 'critical-support',
-    text: 'Caso ocorra um problema crítico no ambiente, o que você espera da Nuvme?',
-    helpText: 'Ajuda a entender a urgência e necessidade de suporte técnico ativo',
-    options: [
-      { 
-        id: 'alert', 
-        text: 'Quero ser informado do problema e decidir como agir', 
+        id: 'basic', 
+        text: 'Queremos visibilidade, relatórios e previsibilidade de gastos.', 
         plans: ['together'] 
       },
       { 
-        id: 'support', 
-        text: 'Quero suporte para resolver incidentes', 
+        id: 'assistance', 
+        text: 'Buscamos ajuda para entender e controlar custos com mais eficiência.', 
         plans: ['essential'] 
       },
       { 
-        id: 'proactive', 
-        text: 'Quero uma equipe que vá agir de forma imediata para resolver incidentes', 
-        plans: ['advanced', 'premier'] 
-      }
-    ]
-  },
-  {
-    id: 'innovation',
-    text: 'Qual nível de inovação sua empresa busca na AWS?',
-    helpText: 'Ajuda a identificar se precisa de acesso ao Laboratório de Inovação, observabilidade avançada, IA e ML',
-    options: [
-      { 
-        id: 'stability', 
-        text: 'Só queremos manter a infraestrutura estável e segura', 
-        plans: ['together', 'essential'] 
+        id: 'optimization', 
+        text: 'Precisamos de apoio recorrente para reduzir desperdícios e otimizar recursos.', 
+        plans: ['advanced'] 
       },
       { 
-        id: 'moderate', 
-        text: 'Queremos explorar novas tecnologias, mas sem pressa', 
-        plans: ['essential','advanced'] 
-      },
-      { 
-        id: 'continuous', 
-        text: 'Precisamos de inovação contínua, testes de conceito e automação avançada', 
+        id: 'advanced-finops', 
+        text: 'Temos alto volume e buscamos estratégias FinOps personalizadas e avançadas.', 
         plans: ['premier'] 
       }
     ]
   },
   {
-    id: 'security',
-    text: 'Sua empresa já enfrentou problemas de segurança ou compliance na AWS?',
-    helpText: 'Ajuda a definir a necessidade de módulos de segurança avançada no Premier',
+    id: 'follow-up',
+    text: 'Que tipo de acompanhamento você valoriza?',
+    helpText: 'Ajuda a definir o tipo de relacionamento com a equipe de suporte',
     options: [
       { 
-        id: 'no', 
-        text: 'Não, nunca enfrentamos problemas', 
-        plans: ['together', 'essential'] 
+        id: 'light', 
+        text: 'Cadência leve com reuniões estratégicas pontuais.', 
+        plans: ['together'] 
       },
       { 
-        id: 'solved', 
-        text: 'Sim, mas conseguimos resolver internamente', 
-        plans: ['essential', 'advanced'] 
+        id: 'frequent', 
+        text: 'Contato frequente, com abertura de chamados e suporte prático.', 
+        plans: ['essential'] 
       },
       { 
-        id: 'need-help', 
-        text: 'Sim, e precisamos de suporte especializado', 
+        id: 'active', 
+        text: 'Time técnico envolvido ativamente na evolução do ambiente.', 
+        plans: ['advanced'] 
+      },
+      { 
+        id: 'comprehensive', 
+        text: 'Consultoria especializada, suporte full-stack e visão 360º do ambiente.', 
         plans: ['premier'] 
-      }
-    ]
-  },
-  {
-    id: 'optimization',
-    text: 'Você precisa de um time dedicado para otimizar performance e custo constantemente?',
-    helpText: 'Diferencia quem precisa de apenas suporte técnico e quem precisa de FinOps/DevOps dedicados',
-    options: [
-      { 
-        id: 'no', 
-        text: 'Não, só precisamos de suporte quando necessário', 
-        plans: ['together', 'essential'] 
-      },
-      { 
-        id: 'yes', 
-        text: 'Sim, queremos acompanhamento técnico contínuo', 
-        plans: ['advanced', 'premier'] 
       }
     ]
   },
   {
     id: 'communication',
-    text: 'Como você prefere se comunicar durante o suporte?',
-    helpText: 'Ajuda a definir o nível de personalização do atendimento necessário',
+    text: 'Qual tipo de contato você prefere com o time de suporte?',
+    helpText: 'Ajuda a definir os canais de comunicação preferidos',
     options: [
       { 
+        id: 'scheduled-meetings', 
+        text: 'Prefiro ter reuniões agendadas conforme necessário.', 
+        plans: ['together'] 
+      },
+      { 
         id: 'tickets', 
-        text: 'Via Tickets (processo estruturado e documentado)', 
-        plans: ['together', 'essential'] 
+        text: 'Quero abrir chamados e receber suporte por ticket ou WhatsApp.', 
+        plans: ['essential'] 
       },
       { 
-        id: 'slack', 
-        text: 'Via Slack (comunicação ágil com a equipe técnica)', 
-        plans: ['advanced', 'premier'] 
+        id: 'slack-support', 
+        text: 'Preciso de um time técnico próximo, com contato frequente via Slack e acompanhamento proativo.', 
+        plans: ['advanced'] 
       },
       { 
-        id: 'dedicated', 
-        text: 'Com um profissional dedicado (atendimento personalizado)', 
+        id: 'dedicated-team', 
+        text: 'Preciso de um time dedicado, disponível por Slack e alinhado com nossas prioridades em tempo real.', 
         plans: ['premier'] 
       }
     ]
-  },
+  }
 ];
 
 export const getPlanRecommendation = (selectedOptions: Record<string, string>): PlanType => {
@@ -390,10 +408,12 @@ export const suggestUpgrade = (selectedOptions: Record<string, string>, recommen
   
   // Example logic for suggesting upgrades based on specific answer combinations
   const hasInternalTeam = selectedOptions['internal-team'] === 'yes';
-  const needsCriticalSupport = selectedOptions['critical-support'] === 'proactive';
-  const needsInnovation = selectedOptions['innovation'] === 'continuous';
+  const needsCriticalSupport = selectedOptions['support-frequency'] === 'critical';
+  const needsInnovation = selectedOptions['cloud-maturity'] === 'expert';
   const hasSecurityIssues = selectedOptions['security'] === 'need-help';
-  const needsOptimization = selectedOptions['optimization'] === 'yes';
+  const needsOptimization = selectedOptions['cost-management'] === 'optimization' || 
+                           selectedOptions['cost-management'] === 'advanced-finops';
+  const needsDedicatedComm = selectedOptions['communication'] === 'slack-support';
   
   if (recommendedPlan === 'together') {
     if (needsCriticalSupport || needsOptimization) {
@@ -401,14 +421,14 @@ export const suggestUpgrade = (selectedOptions: Record<string, string>, recommen
       reason = 'Você indicou que precisa de suporte técnico ativo para problemas críticos, o que não está disponível no plano Together.';
     }
   } else if (recommendedPlan === 'essential') {
-    if (needsInnovation || needsOptimization) {
+    if (needsInnovation || needsOptimization || needsDedicatedComm) {
       suggestedUpgrade = 'advanced';
-      reason = 'Sua necessidade de otimização contínua e inovação seria melhor atendida pelo plano Advanced com Squad DevOps dedicado.';
+      reason = 'Sua necessidade de otimização contínua e comunicação via Slack seria melhor atendida pelo plano Advanced com Squad DevOps dedicado.';
     }
   } else if (recommendedPlan === 'advanced') {
-    if (needsInnovation && hasSecurityIssues) {
+    if (needsInnovation && (hasSecurityIssues || selectedOptions['communication'] === 'dedicated-team')) {
       suggestedUpgrade = 'premier';
-      reason = 'Para empresas que precisam de inovação contínua e têm preocupações avançadas de segurança, o Premier oferece recursos de observabilidade e suporte personalizado.';
+      reason = 'Para empresas com alta maturidade que precisam de inovação contínua e atendimento personalizado, o Premier oferece recursos avançados.';
     }
   }
   

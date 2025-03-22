@@ -24,7 +24,6 @@ const PlanQuiz = () => {
   const [mode, setMode] = useState<"quiz" | "result" | "edit">("quiz");
   const [editingQuestion, setEditingQuestion] = useState<string | null>(null);
 
-  // When the final question is answered, show the result
   useEffect(() => {
     if (Object.keys(selectedOptions).length === questions.length && mode === "quiz") {
       calculateRecommendation();
@@ -37,7 +36,6 @@ const PlanQuiz = () => {
     setFinalPlan(plan);
     setSelectedPlanTab(recommendedPlanId);
     
-    // Check if upgrade suggestion is applicable
     const upgradeSuggestion = suggestUpgrade(selectedOptions, recommendedPlanId);
     setUpgradeRecommendation(upgradeSuggestion);
     
@@ -105,7 +103,6 @@ const PlanQuiz = () => {
     exit: { opacity: 0, y: -20 }
   };
 
-  // Get icon based on plan ID
   const getPlanIcon = (planId: PlanType) => {
     switch (planId) {
       case 'together':
@@ -121,7 +118,6 @@ const PlanQuiz = () => {
     }
   };
 
-  // Get emoji based on plan ID
   const getPlanEmoji = (planId: PlanType) => {
     switch (planId) {
       case 'together':
@@ -137,7 +133,6 @@ const PlanQuiz = () => {
     }
   };
 
-  // Get plan recommendations for a specific answer
   const getPlanRecommendationsForAnswer = (questionId: string, optionId: string): string => {
     const question = questions.find(q => q.id === questionId);
     if (!question) return '';
@@ -230,7 +225,6 @@ const PlanQuiz = () => {
   }
 
   if (mode === "result" && finalPlan) {
-    // We'll always show the currently selected plan details
     const displayPlan = selectedPlanTab 
       ? plans.find(p => p.id === selectedPlanTab) || finalPlan 
       : finalPlan;
@@ -289,7 +283,6 @@ const PlanQuiz = () => {
               </div>
             )}
             
-            {/* Plan selection tabs */}
             <Tabs 
               value={selectedPlanTab || finalPlan.id} 
               onValueChange={(value) => setSelectedPlanTab(value as PlanType)}
