@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -17,6 +18,7 @@ import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import MissionsModulesInfo from "@/components/MissionsModulesInfo";
 
 // Define a new type for selected modules
 interface SelectedModule {
@@ -347,6 +349,11 @@ const Index = () => {
               </Card>
             ))}
           </div>
+        </motion.div>
+        
+        {/* Add the Missions and Modules Info Section */}
+        <motion.div variants={itemVariants}>
+          <MissionsModulesInfo />
         </motion.div>
       </motion.div>
     </div>
