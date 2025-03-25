@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -19,6 +18,9 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import MissionsModulesInfo from "@/components/MissionsModulesInfo";
+import PlanQuizButton from "@/components/PlanQuizButton";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 // Define a new type for selected modules
 interface SelectedModule {
@@ -107,6 +109,7 @@ const Index = () => {
   const [selectedModules, setSelectedModules] = useState<SelectedModule[]>([]);
   const [filteredModules, setFilteredModules] = useState<Module[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
+  const [internalMode, setInternalMode] = useState<boolean>(false);
 
   useEffect(() => {
     if (selectedMission) {
@@ -130,10 +133,8 @@ const Index = () => {
     
     for (const selected of selectedModules) {
       if (selected.module.id === 'skyguard' && selected.selectedServices) {
-        // SkyGuard with services
         newTotalPrice += selected.module.custoBase + (selected.selectedServices.length * 5500);
       } else if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre'].includes(selected.module.id) && selected.complexity) {
-        // Security modules with complexity
         let complexityFactor = 1;
         switch (selected.complexity) {
           case 'easy': complexityFactor = 1; break;
@@ -142,7 +143,6 @@ const Index = () => {
         }
         newTotalPrice += selected.module.custoBase * complexityFactor;
       } else {
-        // Standard modules
         newTotalPrice += calculateModuleCost(selected.module, selected.quantity);
       }
     }
@@ -226,20 +226,36 @@ const Index = () => {
             Guia Nuvme
           </h1>
           <p className="text-lg text-nuvme-dark-gray max-w-3xl mx-auto">
-            Selecione sua missão e módulos para obter um preço estimado para seu projeto
+            Descubra os planos e serviços perfeitos para o seu negócio
           </p>
+
+          <div className="flex items-center justify-center mt-6">
+            <div className="flex items-center space-x-2">
+              <Switch 
+                id="internal-mode" 
+                checked={internalMode} 
+                onCheckedChange={setInternalMode} 
+              />
+              <Label htmlFor="internal-mode" className="text-sm cursor-pointer flex items-center gap-1">
+                <Icon name="Eye" className="w-4 h-4" />
+                Modo Interno
+              </Label>
+            </div>
+          </div>
         </motion.div>
 
-        <motion.div variants={itemVariants}>
-          <MissionSelector
-            missions={missions}
-            selectedMission={selectedMission}
-            onSelectMission={handleSelectMission}
-          />
-        </motion.div>
+        {internalMode && (
+          <motion.div variants={itemVariants}>
+            <MissionSelector
+              missions={missions}
+              selectedMission={selectedMission}
+              onSelectMission={handleSelectMission}
+            />
+          </motion.div>
+        )}
 
         <AnimatePresence mode="wait">
-          {selectedMission && (
+          {internalMode && selectedMission && (
             <motion.div
               key="modules-section"
               initial={{ opacity: 0, height: 0 }}
@@ -287,7 +303,7 @@ const Index = () => {
           )}
         </AnimatePresence>
 
-        {!selectedMission && (
+        {internalMode && !selectedMission && (
           <motion.div 
             variants={itemVariants}
             className="mt-12 text-center"
@@ -304,13 +320,15 @@ const Index = () => {
           </motion.div>
         )}
 
-        {/* Monthly Plan Cards Section */}
+        {/* Monthly Plan Section */}
         <motion.div 
           variants={itemVariants}
           className="mt-16"
         >
           <h2 className="text-2xl font-semibold text-center mb-8">Nossos Planos Mensais</h2>
           
+          <PlanQuizButton />
+
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {monthlyPlans.map((plan) => (
               <Card 
@@ -338,14 +356,6 @@ const Index = () => {
                     ))}
                   </ul>
                 </CardContent>
-                <CardFooter className="pt-2 flex-col items-stretch">
-                  <Link to="/plano" className="w-full">
-                    <Button className="w-full bg-nuvme-blue hover:bg-nuvme-blue/90 text-white">
-                      <Icon name="Search" className="w-4 h-4 mr-2" />
-                      Fazer quiz para escolher plano
-                    </Button>
-                  </Link>
-                </CardFooter>
               </Card>
             ))}
           </div>
