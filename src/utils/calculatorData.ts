@@ -56,16 +56,16 @@ const securityServices = [
 // Definição dos módulos
 export const modules: Module[] = [
   // Missão Modernização
-  { id: 'cicd', name: 'CI/CD', description: 'Pipeline de Integração Contínua', missions: ['modernization'], horasFixas: 18, custoBase: 5400, variableFactor: 4, variableUnit: 'Pipelines', icon: 'GitBranch' },
-  { id: 'kubernetes', name: 'Kubernetes', description: 'Configuração de Cluster Kubernetes', missions: ['modernization'], horasFixas: 24, custoBase: 7200, variableFactor: 18, variableUnit: 'Clusters', icon: 'Ship' },
-  { id: 'database', name: 'Database', description: 'Otimização e Migração de Banco de Dados', missions: ['modernization'], horasFixas: 20, custoBase: 6000, variableFactor: 6, variableUnit: 'Bancos de Dados', icon: 'Database' },
-  { id: 'gitops', name: 'GitOps', description: 'Automação de deploy com GitOps', missions: ['modernization'], horasFixas: 15, custoBase: 4500, variableFactor: 4, variableUnit: 'Repositórios', icon: 'GitMerge' },
-  { id: 'containerization', name: 'Conteinerização', description: 'Transformação de aplicações para containers', missions: ['modernization'], horasFixas: 20, custoBase: 6000, variableFactor: 6, variableUnit: 'APIs', icon: 'Package' },
+  { id: 'cicd', name: 'CI/CD', description: 'Pipeline de Integração Contínua', missions: ['modernization'], horasFixas: 18, custoBase: 4400, variableFactor: 4, variableUnit: 'Pipelines', icon: 'GitBranch' },
+  { id: 'kubernetes', name: 'Kubernetes', description: 'Configuração de Cluster Kubernetes', missions: ['modernization'], horasFixas: 24, custoBase: 5200, variableFactor: 18, variableUnit: 'Clusters', icon: 'Ship' },
+  { id: 'database', name: 'Database', description: 'Otimização e Migração de Banco de Dados', missions: ['modernization'], horasFixas: 20, custoBase: 5000, variableFactor: 6, variableUnit: 'Bancos de Dados', icon: 'Database' },
+  { id: 'gitops', name: 'GitOps', description: 'Automação de deploy com GitOps', missions: ['modernization'], horasFixas: 15, custoBase: 3500, variableFactor: 4, variableUnit: 'Repositórios', icon: 'GitMerge' },
+  { id: 'containerization', name: 'Conteinerização', description: 'Transformação de aplicações para containers', missions: ['modernization'], horasFixas: 20, custoBase: 5000, variableFactor: 5, variableUnit: 'APIs', icon: 'Package' },
   { id: 'karpenter', name: 'Karpenter', description: 'Autoescalonamento com Karpenter', missions: ['modernization'], horasFixas: 12, custoBase: 5600, variableFactor: 1, variableUnit: 'Deployments/APIs', icon: 'BarChart3' },
 
   // Missão Segurança
   { id: 'security_practices', name: 'Security Practices', description: 'Boas práticas de segurança na nuvem', missions: ['security'], horasFixas: 20, custoBase: 7200, variableUnit: 'complexidade', hasComplexity: true, icon: 'Shield' },
-  { id: 'skyguard', name: 'SkyGuard', description: 'Monitoramento avançado de segurança', missions: ['security'], horasFixas: 18, custoBase: 5400, variableUnit: 'serviços', hasServices: true, availableServices: securityServices, icon: 'Eye' },
+  { id: 'skyguard', name: 'SkyGuard', description: 'Monitoramento avançado de segurança', missions: ['security'], horasFixas: 18, custoBase: 4400, variableUnit: 'serviços', hasServices: true, availableServices: securityServices, icon: 'Eye' },
   { id: 'security_hub', name: 'Security Hub', description: 'Gestão de conformidade com AWS Security Hub', missions: ['security'], horasFixas: 15, custoBase: 4500, variableUnit: 'complexidade', hasComplexity: true, icon: 'Lock' },
   { id: 'disaster_recovery', name: 'Disaster Recovery', description: 'Plano de recuperação de desastres', missions: ['security'], horasFixas: 24, custoBase: 7200, variableUnit: 'complexidade', hasComplexity: true, icon: 'CloudRain' },
   { id: 'conta_cofre', name: 'Conta Cofre', description: 'Gerenciamento seguro de credenciais', missions: ['security'], horasFixas: 12, custoBase: 3600, variableUnit: 'complexidade', hasComplexity: true, icon: 'KeyRound' },
