@@ -327,7 +327,7 @@ const Index = () => {
 
         {/* Internal Mode Toggle and Calculator Section - Moved to bottom */}
         <motion.div variants={itemVariants} className="mt-16 text-center border-t border-gray-200 pt-10">
-          <h2 className="text-xl font-semibold mb-6">Modo Interno - Calculadora de Preços</h2>
+          <h2 className="text-xl font-semibold mb-6">Modo Interno</h2>
           
           <div className="flex items-center justify-center mb-6">
             <div className="flex items-center space-x-2">
