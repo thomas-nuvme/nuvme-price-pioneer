@@ -1,5 +1,5 @@
 
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode } from 'react';
 
 interface AuthContextType {
   isAuthenticated: boolean;
@@ -15,18 +15,12 @@ const CORRECT_PIN = "1234";
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
-  // Check if user was previously authenticated in this session
-  useEffect(() => {
-    const authStatus = sessionStorage.getItem('auth');
-    if (authStatus === 'authenticated') {
-      setIsAuthenticated(true);
-    }
-  }, []);
+  // No session storage check, so PIN will be asked every time the page reloads
 
   const login = (pin: string): boolean => {
     if (pin === CORRECT_PIN) {
       setIsAuthenticated(true);
-      sessionStorage.setItem('auth', 'authenticated');
+      // No longer storing auth in sessionStorage
       return true;
     }
     return false;
@@ -34,7 +28,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const logout = () => {
     setIsAuthenticated(false);
-    sessionStorage.removeItem('auth');
+    // No need to clear sessionStorage
   };
 
   return (
