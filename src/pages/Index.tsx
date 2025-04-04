@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -26,8 +27,9 @@ import { Label } from "@/components/ui/label";
 interface SelectedModule {
   module: Module;
   quantity: number;
-  complexity?: 'easy' | 'moderate' | 'complex';
+  complexity?: 'simple' | 'complex' | 'very_complex';
   selectedServices?: string[];
+  databaseSize?: 'small' | 'medium' | 'large';
 }
 
 // Define the monthly plans data
@@ -113,9 +115,30 @@ const Index = () => {
 
   useEffect(() => {
     if (selectedMission) {
-      const newFilteredModules = modules.filter((module) =>
+      // Get modules for the selected mission
+      let newFilteredModules = modules.filter((module) =>
         module.missions.includes(selectedMission)
       );
+      
+      // Reorder modules for Modernization mission
+      if (selectedMission === 'modernization') {
+        const orderMap: { [key: string]: number } = {
+          'cicd': 1,
+          'container': 2,
+          'database': 3,
+          'gitops': 4,
+          'kubernetes': 5,
+          'karpenter': 6,
+          'arquitetura': 7,
+          'faturamento': 8,
+          'painel_nuvme': 9
+        };
+        
+        newFilteredModules.sort((a, b) => {
+          return (orderMap[a.id] || 100) - (orderMap[b.id] || 100);
+        });
+      }
+      
       setFilteredModules(newFilteredModules);
       
       const validSelectedModules = selectedModules.filter(
@@ -132,14 +155,37 @@ const Index = () => {
     let newTotalPrice = 0;
     
     for (const selected of selectedModules) {
-      if (selected.module.id === 'skyguard' && selected.selectedServices) {
+      if (selected.module.id === 'database' && selected.selectedServices) {
+        let basePrice = 0;
+        
+        // Calculate base price from selected services
+        selected.selectedServices.forEach(serviceId => {
+          const service = selected.module.availableServices?.find(s => s.id === serviceId);
+          if (service && service.price) {
+            basePrice += service.price;
+          }
+        });
+        
+        // Apply size multiplier
+        if (selected.databaseSize) {
+          let sizeMultiplier = 1;
+          switch (selected.databaseSize) {
+            case 'small': sizeMultiplier = 1; break;
+            case 'medium': sizeMultiplier = 1.5; break;
+            case 'large': sizeMultiplier = 2; break;
+          }
+          newTotalPrice += basePrice * sizeMultiplier;
+        } else {
+          newTotalPrice += basePrice;
+        }
+      } else if (selected.module.id === 'skyguard' && selected.selectedServices) {
         newTotalPrice += selected.module.custoBase + (selected.selectedServices.length * 5500);
       } else if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre'].includes(selected.module.id) && selected.complexity) {
         let complexityFactor = 1;
         switch (selected.complexity) {
-          case 'easy': complexityFactor = 1; break;
-          case 'moderate': complexityFactor = 1.7; break;
-          case 'complex': complexityFactor = 2.9; break;
+          case 'simple': complexityFactor = 1; break;
+          case 'complex': complexityFactor = 1.7; break;
+          case 'very_complex': complexityFactor = 2.9; break;
         }
         newTotalPrice += selected.module.custoBase * complexityFactor;
       } else {
@@ -157,19 +203,20 @@ const Index = () => {
   const handleSelectModule = (
     module: Module, 
     quantity: number, 
-    complexity?: 'easy' | 'moderate' | 'complex',
-    selectedServices?: string[]
+    complexity?: 'simple' | 'complex' | 'very_complex',
+    selectedServices?: string[],
+    databaseSize?: 'small' | 'medium' | 'large'
   ) => {
     setSelectedModules((prev) => {
       const exists = prev.find((item) => item.module.id === module.id);
       if (exists) {
         return prev.map((item) =>
           item.module.id === module.id 
-            ? { ...item, quantity, complexity, selectedServices } 
+            ? { ...item, quantity, complexity, selectedServices, databaseSize } 
             : item
         );
       } else {
-        return [...prev, { module, quantity, complexity, selectedServices }];
+        return [...prev, { module, quantity, complexity, selectedServices, databaseSize }];
       }
     });
   };
@@ -327,7 +374,9 @@ const Index = () => {
         >
           <h2 className="text-2xl font-semibold text-center mb-8">Nossos Planos Mensais</h2>
           
-          <PlanQuizButton />
+          <div className="flex justify-center mb-8">
+            <PlanQuizButton />
+          </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {monthlyPlans.map((plan) => (

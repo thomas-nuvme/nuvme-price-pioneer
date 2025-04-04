@@ -25,7 +25,32 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
   const formatPrice = (value: number) => formatCurrency(value);
 
   const getModulePrice = (selected: SelectedModule): number => {
-    const { module, quantity, complexity, selectedServices } = selected;
+    const { module, quantity, complexity, selectedServices, databaseSize } = selected;
+    
+    if (module.id === 'database' && selectedServices && selectedServices.length > 0) {
+      let basePrice = 0;
+      
+      // Calculate base price from selected services
+      selectedServices.forEach(serviceId => {
+        const service = module.availableServices?.find(s => s.id === serviceId);
+        if (service && service.price) {
+          basePrice += service.price;
+        }
+      });
+      
+      // Apply size multiplier
+      if (databaseSize) {
+        let sizeMultiplier = 1;
+        switch (databaseSize) {
+          case 'small': sizeMultiplier = 1; break;
+          case 'medium': sizeMultiplier = 1.5; break;
+          case 'large': sizeMultiplier = 2; break;
+        }
+        return basePrice * sizeMultiplier;
+      }
+      
+      return basePrice;
+    }
     
     if (module.id === 'skyguard' && selectedServices && selectedServices.length > 0) {
       return module.custoBase + (selectedServices.length * 5500);
@@ -34,9 +59,9 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
     if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre'].includes(module.id) && complexity) {
       let complexityFactor = 1;
       switch (complexity) {
-        case 'easy': complexityFactor = 1; break;
-        case 'moderate': complexityFactor = 1.7; break;
-        case 'complex': complexityFactor = 2.9; break;
+        case 'simple': complexityFactor = 1; break;
+        case 'complex': complexityFactor = 1.7; break;
+        case 'very_complex': complexityFactor = 2.9; break;
       }
       return module.custoBase * complexityFactor;
     }
@@ -46,14 +71,30 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
   };
 
   const getModuleDetails = (selected: SelectedModule): string => {
-    const { module, quantity, complexity, selectedServices } = selected;
+    const { module, quantity, complexity, selectedServices, databaseSize } = selected;
+    
+    if (module.id === 'database' && selectedServices) {
+      const servicesText = selectedServices.length > 0 
+        ? selectedServices.map(id => {
+            const service = module.availableServices?.find(s => s.id === id);
+            return service?.name;
+          }).join(', ') 
+        : '';
+      
+      const sizeText = databaseSize ? 
+        (databaseSize === 'small' ? '1-100GB' : 
+         databaseSize === 'medium' ? '100-500GB' : 
+         '500-1000GB') : '';
+         
+      return `${servicesText}${sizeText ? ` (${sizeText})` : ''}`;
+    }
     
     if (module.id === 'skyguard' && selectedServices) {
       return `${selectedServices.length} serviços`;
     }
     
     if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre'].includes(module.id) && complexity) {
-      return complexity === 'easy' ? 'Fácil' : complexity === 'moderate' ? 'Moderado' : 'Complexo';
+      return complexity === 'simple' ? 'Simples' : complexity === 'complex' ? 'Complexo' : 'Muito Complexo';
     }
     
     if (module.variableFactor && module.variableUnit) {

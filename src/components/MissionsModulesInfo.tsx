@@ -45,9 +45,9 @@ const missionsInfo: MissionInfo[] = [
         example: "Startup SaaS que faz vários deploys por semana e precisa de validação automatizada para ganhar agilidade."
       },
       {
-        id: "containerization",
+        id: "container",
         icon: "Package",
-        title: "Módulo Conteinerização",
+        title: "Módulo Contêiner",
         subtitle: "Portabilidade e padronização",
         description: "Migramos aplicações para containers (Docker), organizamos em padrões escaláveis e seguros, geralmente usando ECS (Elastic Container Service), e integramos com esteiras de CI/CD.",
         forWho: "Equipes com aplicações legadas ou monolíticas que precisam melhorar portabilidade e eficiência operacional.",
