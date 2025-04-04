@@ -2,16 +2,24 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { useAuth } from '@/contexts/AuthContext';
-import { Navigate, Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Icon } from '@/components/Icon';
 import { motion } from 'framer-motion';
 
 const Welcome = () => {
   const { isAuthenticated, logout } = useAuth();
+  const navigate = useNavigate();
 
-  // If not authenticated, redirect to PIN protection
+  // If not authenticated, redirect using useNavigate hook
+  React.useEffect(() => {
+    if (!isAuthenticated) {
+      navigate('/pin', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
+
+  // If not authenticated, don't render anything while the effect redirects
   if (!isAuthenticated) {
-    return <Navigate to="/pin" replace />;
+    return null;
   }
 
   return (

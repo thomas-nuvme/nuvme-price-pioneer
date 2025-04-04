@@ -1,6 +1,6 @@
 
-import React, { useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@/contexts/AuthContext';
 import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
 import { Button } from '@/components/ui/button';
@@ -13,11 +13,14 @@ const PinProtection = () => {
   const [pin, setPin] = useState('');
   const [error, setError] = useState(false);
   const [attempts, setAttempts] = useState(0);
+  const navigate = useNavigate();
 
-  // If already authenticated, redirect to home
-  if (isAuthenticated) {
-    return <Navigate to="/" replace />;
-  }
+  // If already authenticated, redirect using useNavigate
+  useEffect(() => {
+    if (isAuthenticated) {
+      navigate('/', { replace: true });
+    }
+  }, [isAuthenticated, navigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -38,6 +41,11 @@ const PinProtection = () => {
       transition: { duration: 0.5 } 
     },
   };
+
+  // Don't render anything while the redirect is happening
+  if (isAuthenticated) {
+    return null;
+  }
 
   return (
     <motion.div 
