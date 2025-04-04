@@ -275,97 +275,7 @@ const Index = () => {
           <p className="text-lg text-nuvme-dark-gray max-w-3xl mx-auto">
             Descubra os planos e serviços perfeitos para o seu negócio
           </p>
-
-          <div className="flex items-center justify-center mt-6">
-            <div className="flex items-center space-x-2">
-              <Switch 
-                id="internal-mode" 
-                checked={internalMode} 
-                onCheckedChange={setInternalMode} 
-              />
-              <Label htmlFor="internal-mode" className="text-sm cursor-pointer flex items-center gap-1">
-                <Icon name="Eye" className="w-4 h-4" />
-                Modo Interno
-              </Label>
-            </div>
-          </div>
         </motion.div>
-
-        {internalMode && (
-          <motion.div variants={itemVariants}>
-            <MissionSelector
-              missions={missions}
-              selectedMission={selectedMission}
-              onSelectMission={handleSelectMission}
-            />
-          </motion.div>
-        )}
-
-        <AnimatePresence mode="wait">
-          {internalMode && selectedMission && (
-            <motion.div
-              key="modules-section"
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-            >
-              <div className="flex flex-col lg:flex-row gap-8">
-                <div className="flex-1 order-2 lg:order-1">
-                  <div className="flex items-center justify-between mb-6">
-                    <h2 className="text-lg font-medium">Módulos Disponíveis</h2>
-                    <button
-                      onClick={handleReset}
-                      className="inline-flex items-center text-sm text-muted-foreground hover:text-nuvme-teal transition-colors"
-                    >
-                      <Icon name="RotateCcw" className="w-3 h-3 mr-1" />
-                      Reiniciar
-                    </button>
-                  </div>
-
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {filteredModules.map((module) => (
-                      <ModuleCard
-                        key={module.id}
-                        module={module}
-                        isSelected={selectedModules.some(
-                          (item) => item.module.id === module.id
-                        )}
-                        onSelect={handleSelectModule}
-                        onDeselect={handleDeselectModule}
-                      />
-                    ))}
-                  </div>
-                </div>
-
-                <div className="w-full lg:w-80 order-1 lg:order-2 shrink-0">
-                  <PriceBreakdown
-                    selectedMission={getCurrentMission()}
-                    selectedModules={selectedModules}
-                    totalPrice={totalPrice}
-                  />
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {internalMode && !selectedMission && (
-          <motion.div 
-            variants={itemVariants}
-            className="mt-12 text-center"
-          >
-            <div className="inline-block p-4 rounded-full bg-nuvme-light-teal animate-float">
-              <Icon 
-                name="MousePointerClick" 
-                className="w-8 h-8 text-nuvme-teal" 
-              />
-            </div>
-            <p className="mt-4 text-muted-foreground">
-              Selecione uma missão para começar seu cálculo de preço
-            </p>
-          </motion.div>
-        )}
 
         {/* Monthly Plan Section */}
         <motion.div 
@@ -413,6 +323,99 @@ const Index = () => {
         {/* Add the Missions and Modules Info Section */}
         <motion.div variants={itemVariants}>
           <MissionsModulesInfo />
+        </motion.div>
+
+        {/* Internal Mode Toggle and Calculator Section - Moved to bottom */}
+        <motion.div variants={itemVariants} className="mt-16 text-center border-t border-gray-200 pt-10">
+          <h2 className="text-xl font-semibold mb-6">Modo Interno - Calculadora de Preços</h2>
+          
+          <div className="flex items-center justify-center mb-6">
+            <div className="flex items-center space-x-2">
+              <Switch 
+                id="internal-mode" 
+                checked={internalMode} 
+                onCheckedChange={setInternalMode} 
+              />
+              <Label htmlFor="internal-mode" className="text-sm cursor-pointer flex items-center gap-1">
+                <Icon name="Eye" className="w-4 h-4" />
+                Modo Interno
+              </Label>
+            </div>
+          </div>
+
+          <AnimatePresence mode="wait">
+            {internalMode && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="border border-gray-200 rounded-lg p-6 bg-white shadow-sm"
+              >
+                <h3 className="font-medium text-lg mb-6">Calculadora de Preço - Missões e Módulos</h3>
+                <MissionSelector
+                  missions={missions}
+                  selectedMission={selectedMission}
+                  onSelectMission={handleSelectMission}
+                />
+
+                {selectedMission && (
+                  <div className="mt-8">
+                    <div className="flex flex-col lg:flex-row gap-8">
+                      <div className="flex-1 order-2 lg:order-1">
+                        <div className="flex items-center justify-between mb-6">
+                          <h2 className="text-lg font-medium">Módulos Disponíveis</h2>
+                          <button
+                            onClick={handleReset}
+                            className="inline-flex items-center text-sm text-muted-foreground hover:text-nuvme-teal transition-colors"
+                          >
+                            <Icon name="RotateCcw" className="w-3 h-3 mr-1" />
+                            Reiniciar
+                          </button>
+                        </div>
+
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                          {filteredModules.map((module) => (
+                            <ModuleCard
+                              key={module.id}
+                              module={module}
+                              isSelected={selectedModules.some(
+                                (item) => item.module.id === module.id
+                              )}
+                              onSelect={handleSelectModule}
+                              onDeselect={handleDeselectModule}
+                            />
+                          ))}
+                        </div>
+                      </div>
+
+                      <div className="w-full lg:w-80 order-1 lg:order-2 shrink-0">
+                        <PriceBreakdown
+                          selectedMission={getCurrentMission()}
+                          selectedModules={selectedModules}
+                          totalPrice={totalPrice}
+                        />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {!selectedMission && (
+                  <div className="mt-12 text-center">
+                    <div className="inline-block p-4 rounded-full bg-nuvme-light-teal animate-float">
+                      <Icon 
+                        name="MousePointerClick" 
+                        className="w-8 h-8 text-nuvme-teal" 
+                      />
+                    </div>
+                    <p className="mt-4 text-muted-foreground">
+                      Selecione uma missão para começar seu cálculo de preço
+                    </p>
+                  </div>
+                )}
+              </motion.div>
+            )}
+          </AnimatePresence>
         </motion.div>
       </motion.div>
     </div>

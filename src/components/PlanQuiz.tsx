@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
@@ -288,12 +287,19 @@ const PlanQuiz = () => {
                     {Object.entries(selectedOptions).map(([questionId, optionId]) => {
                       const question = questions.find(q => q.id === questionId);
                       const option = question?.options.find(o => o.id === optionId);
+                      const recommendedPlan = option?.plans[0];
+                      const planName = recommendedPlan ? plans.find(p => p.id === recommendedPlan)?.name : '';
                       
                       return (
                         <div key={questionId} className="pl-7 border-l-2 border-indigo-100">
                           <p className="font-medium text-sm">{question?.text}</p>
-                          <div className="text-sm text-muted-foreground">
+                          <div className="text-sm text-muted-foreground flex items-center">
                             <span>{option?.text}</span>
+                            {planName && (
+                              <Badge variant="outline" className="ml-2 bg-primary/10">
+                                {planName}
+                              </Badge>
+                            )}
                           </div>
                         </div>
                       );
