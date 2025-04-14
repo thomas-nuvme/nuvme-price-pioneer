@@ -4,8 +4,8 @@ import {
   MissionType, 
   Mission, 
   Module, 
-  missions, 
   modules, 
+  missions, 
   calculateModuleCost 
 } from "@/utils/calculatorData";
 import MissionSelector from "@/components/MissionSelector";
@@ -21,7 +21,7 @@ import MissionsModulesInfo from "@/components/MissionsModulesInfo";
 import PlanQuizButton from "@/components/PlanQuizButton";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
-import { toast } from "react-toastify";
+import { useToast } from "@/hooks/use-toast";
 
 interface SelectedModule {
   module: Module;
@@ -110,6 +110,7 @@ const Index = () => {
   const [filteredModules, setFilteredModules] = useState<Module[]>([]);
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [internalMode, setInternalMode] = useState<boolean>(false);
+  const { toast } = useToast();
 
   useEffect(() => {
     if (selectedMission) {
@@ -203,11 +204,19 @@ const Index = () => {
   ) => {
     setSelectedModules((prev) => {
       if (module.id === 'cicd' && prev.some(item => item.module.id === 'gitops')) {
-        toast.error('CI/CD não pode ser selecionado junto com GitOps');
+        toast({
+          variant: "destructive",
+          title: "Erro",
+          description: 'CI/CD não pode ser selecionado junto com GitOps'
+        });
         return prev;
       }
       if (module.id === 'gitops' && prev.some(item => item.module.id === 'cicd')) {
-        toast.error('GitOps não pode ser selecionado junto com CI/CD');
+        toast({
+          variant: "destructive",
+          title: "Erro",
+          description: 'GitOps não pode ser selecionado junto com CI/CD'
+        });
         return prev;
       }
 
