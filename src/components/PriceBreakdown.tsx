@@ -1,7 +1,8 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { SelectedModule, formatCurrency, HOURLY_RATE, Mission, modules } from "@/utils/calculatorData";
+import { SelectedModule, formatCurrency, HOURLY_RATE, Mission, modules, missions } from "@/utils/calculatorData";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { Icon } from "@/components/Icon";
 import { Separator } from "@/components/ui/separator";
