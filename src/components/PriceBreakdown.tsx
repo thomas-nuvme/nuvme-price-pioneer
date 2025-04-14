@@ -1,7 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { SelectedModule, formatCurrency, HOURLY_RATE, MARGIN_PERCENTAGE, Mission } from "@/utils/calculatorData";
+import { SelectedModule, formatCurrency, HOURLY_RATE, Mission } from "@/utils/calculatorData";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { Icon } from "@/components/Icon";
 import { Separator } from "@/components/ui/separator";
@@ -19,13 +19,21 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
   selectedModules,
   totalPrice,
 }) => {
-  const [discount, setDiscount] = useState<number>(0);
+  const [discountPercentage, setDiscountPercentage] = useState<number>(0);
 
-  if (!selectedMission || selectedModules.length === 0) {
-    return null;
+  if (selectedModules.length === 0) {
+    return (
+      <div className="glass rounded-2xl border border-nuvme-teal/10 p-6 shadow-sm">
+        <div className="flex items-center mb-4">
+          <div className="w-8 h-8 rounded-full bg-nuvme-teal/20 flex items-center justify-center mr-3">
+            <Icon name="Calculator" className="w-4 h-4 text-nuvme-teal" />
+          </div>
+          <h3 className="text-lg font-medium">Resumo do Projeto</h3>
+        </div>
+        <p className="text-sm text-muted-foreground">Selecione módulos para calcular o preço do projeto.</p>
+      </div>
+    );
   }
-
-  const formatPrice = (value: number) => formatCurrency(value);
 
   const getModulePrice = (selected: SelectedModule): number => {
     const { module, quantity, complexity, selectedServices, databaseSize } = selected;
@@ -119,7 +127,8 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
     }),
   };
 
-  const finalPrice = totalPrice - (discount || 0);
+  const discountAmount = (totalPrice * discountPercentage) / 100;
+  const finalPrice = totalPrice - discountAmount;
 
   return (
     <AnimatePresence>
@@ -133,9 +142,15 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
       >
         <div className="flex items-center mb-4">
           <div className="w-8 h-8 rounded-full bg-nuvme-teal/20 flex items-center justify-center mr-3">
-            <Icon name={selectedMission.icon} className="w-4 h-4 text-nuvme-teal" />
+            {selectedMission ? (
+              <Icon name={selectedMission.icon} className="w-4 h-4 text-nuvme-teal" />
+            ) : (
+              <Icon name="Calculator" className="w-4 h-4 text-nuvme-teal" />
+            )}
           </div>
-          <h3 className="text-lg font-medium">Missão {selectedMission.name}</h3>
+          <h3 className="text-lg font-medium">
+            {selectedMission ? `Missão ${selectedMission.name}` : 'Resumo do Projeto'}
+          </h3>
         </div>
 
         <Separator className="mb-4" />
@@ -173,29 +188,38 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
               <span className="font-medium">Subtotal</span>
               <AnimatedNumber 
                 value={totalPrice} 
-                formatter={formatPrice} 
+                formatter={formatCurrency} 
                 className="text-lg font-semibold text-nuvme-blue"
                 duration={800}
               />
             </div>
 
             <div className="flex flex-col gap-2">
-              <Label htmlFor="discount">Desconto (R$)</Label>
+              <Label htmlFor="discount">Desconto (%)</Label>
               <Input
                 id="discount"
                 type="number"
-                placeholder="0.00"
-                value={discount || ''}
-                onChange={(e) => setDiscount(Number(e.target.value))}
+                min="0"
+                max="100"
+                placeholder="0"
+                value={discountPercentage || ''}
+                onChange={(e) => setDiscountPercentage(Number(e.target.value))}
                 className="w-full"
               />
             </div>
+
+            {discountPercentage > 0 && (
+              <div className="flex justify-between items-center text-sm text-muted-foreground">
+                <span>Valor do desconto</span>
+                <span>{formatCurrency(discountAmount)}</span>
+              </div>
+            )}
 
             <div className="flex justify-between items-center pt-2 border-t">
               <span className="font-medium">Preço Total Final</span>
               <AnimatedNumber 
                 value={finalPrice} 
-                formatter={formatPrice} 
+                formatter={formatCurrency} 
                 className="text-xl font-bold text-nuvme-blue"
                 duration={800}
               />

@@ -88,10 +88,50 @@ export const modules: Module[] = [
   { id: 'finops_avancado', name: 'FinOps Avançado', description: 'Gestão avançada de custos na nuvem', missions: ['finops'], horasFixas: 18, custoBase: 18500, icon: 'BarChart4' },
 
   // Missão NextGen
-  { id: 'observability', name: 'Observabilidade', description: 'Monitoramento e Logs avançados', missions: ['nextgen'], horasFixas: 15, custoBase: 15000, icon: 'LineChart' },
-  { id: 'ia', name: 'Inteligência Artificial', description: 'Implantação de soluções de IA', missions: ['nextgen'], horasFixas: 20, custoBase: 20000, icon: 'Brain' },
-  { id: 'ml', name: 'Machine Learning', description: 'Desenvolvimento de modelos de aprendizado', missions: ['nextgen'], horasFixas: 24, custoBase: 3500, icon: 'Network' },
-  { id: 'serverless', name: 'Serverless', description: 'Aplicações sem servidor', missions: ['nextgen'], horasFixas: 18, custoBase: 2100, icon: 'ServerCrash' },
+  { 
+    id: 'observability', 
+    name: 'Observabilidade', 
+    description: 'Monitoramento e Logs avançados', 
+    missions: ['nextgen'], 
+    horasFixas: 15, 
+    custoBase: 15000,
+    icon: 'LineChart',
+    hasComplexity: true,
+    variableUnit: 'complexidade' 
+  },
+  { 
+    id: 'ia', 
+    name: 'Inteligência Artificial', 
+    description: 'Implantação de soluções de IA', 
+    missions: ['nextgen'], 
+    horasFixas: 20, 
+    custoBase: 20000,
+    icon: 'Brain',
+    hasComplexity: true,
+    variableUnit: 'complexidade' 
+  },
+  { 
+    id: 'ml', 
+    name: 'Machine Learning', 
+    description: 'Desenvolvimento de modelos de aprendizado', 
+    missions: ['nextgen'], 
+    horasFixas: 24, 
+    custoBase: 3500,
+    icon: 'Network',
+    hasComplexity: true,
+    variableUnit: 'complexidade' 
+  },
+  { 
+    id: 'serverless', 
+    name: 'Serverless', 
+    description: 'Aplicações sem servidor', 
+    missions: ['nextgen'], 
+    horasFixas: 18, 
+    custoBase: 2100,
+    icon: 'ServerCrash',
+    hasComplexity: true,
+    variableUnit: 'complexidade' 
+  },
 
   // TakeOff (pode ser adicionado a todas as missões) - reordered as requested for last two
   { id: 'arquitetura', name: 'Arquitetura', description: 'Definição de arquitetura otimizada', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 12, custoBase: 5200, icon: 'Blocks' },
@@ -135,13 +175,13 @@ export const calculateModuleCost = (module: Module, quantity: number = 1, comple
     return module.custoBase + (selectedServices.length * 5500);
   }
   
-  // For modules with complexity
-  if (module.hasComplexity && complexity) {
+  // For NextGen modules with complexity
+  if (['observability', 'ia', 'ml', 'serverless'].includes(module.id) && complexity) {
     let complexityFactor = 1;
     switch (complexity) {
-      case 'simple': complexityFactor = 1; break;
-      case 'complex': complexityFactor = 1.7; break;
-      case 'very_complex': complexityFactor = 2.9; break;
+      case 'simple': complexityFactor = 0.8; break; // 20% lower
+      case 'complex': complexityFactor = 1; break;  // base price
+      case 'very_complex': complexityFactor = 1.4; break; // 40% higher
     }
     return module.custoBase * complexityFactor;
   }
