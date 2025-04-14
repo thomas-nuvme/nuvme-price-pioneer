@@ -1,11 +1,12 @@
-
-import React from "react";
+import React, { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { SelectedModule, formatCurrency, HOURLY_RATE, MARGIN_PERCENTAGE, Mission } from "@/utils/calculatorData";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { Icon } from "@/components/Icon";
 import { Separator } from "@/components/ui/separator";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 interface PriceBreakdownProps {
   selectedMission: Mission | null;
@@ -18,6 +19,8 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
   selectedModules,
   totalPrice,
 }) => {
+  const [discount, setDiscount] = useState<number>(0);
+
   if (!selectedMission || selectedModules.length === 0) {
     return null;
   }
@@ -30,7 +33,6 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
     if (module.id === 'database' && selectedServices && selectedServices.length > 0) {
       let basePrice = 0;
       
-      // Calculate base price from selected services
       selectedServices.forEach(serviceId => {
         const service = module.availableServices?.find(s => s.id === serviceId);
         if (service && service.price) {
@@ -38,7 +40,6 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
         }
       });
       
-      // Apply size multiplier
       if (databaseSize) {
         let sizeMultiplier = 1;
         switch (databaseSize) {
@@ -66,7 +67,6 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
       return module.custoBase * complexityFactor;
     }
     
-    // Handle standard calculation
     return module.custoBase + (module.variableFactor ? module.variableFactor * quantity * HOURLY_RATE : 0);
   };
 
@@ -119,6 +119,8 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
     }),
   };
 
+  const finalPrice = totalPrice - (discount || 0);
+
   return (
     <AnimatePresence>
       <motion.div
@@ -166,14 +168,38 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
         </div>
 
         <div className="mt-4 pt-3 border-t border-border">
-          <div className="flex justify-between items-center">
-            <span className="font-medium">Preço Total Estimado</span>
-            <AnimatedNumber 
-              value={totalPrice} 
-              formatter={formatPrice} 
-              className="text-lg font-semibold text-nuvme-blue"
-              duration={800}
-            />
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <span className="font-medium">Subtotal</span>
+              <AnimatedNumber 
+                value={totalPrice} 
+                formatter={formatPrice} 
+                className="text-lg font-semibold text-nuvme-blue"
+                duration={800}
+              />
+            </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="discount">Desconto (R$)</Label>
+              <Input
+                id="discount"
+                type="number"
+                placeholder="0.00"
+                value={discount || ''}
+                onChange={(e) => setDiscount(Number(e.target.value))}
+                className="w-full"
+              />
+            </div>
+
+            <div className="flex justify-between items-center pt-2 border-t">
+              <span className="font-medium">Preço Total Final</span>
+              <AnimatedNumber 
+                value={finalPrice} 
+                formatter={formatPrice} 
+                className="text-xl font-bold text-nuvme-blue"
+                duration={800}
+              />
+            </div>
           </div>
         </div>
       </motion.div>

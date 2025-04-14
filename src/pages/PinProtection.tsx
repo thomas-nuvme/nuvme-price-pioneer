@@ -62,7 +62,7 @@ const PinProtection = () => {
             className="mx-auto w-32 mb-4"
           />
           <h1 className="text-2xl font-semibold text-nuvme-dark mb-2">
-            Calculadora Nuvme
+            Guia Nuvme
           </h1>
           <p className="text-nuvme-dark-gray">
             Digite o PIN para acessar o guia

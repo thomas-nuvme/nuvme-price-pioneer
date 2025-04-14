@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -22,8 +21,8 @@ import MissionsModulesInfo from "@/components/MissionsModulesInfo";
 import PlanQuizButton from "@/components/PlanQuizButton";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { toast } from "react-toastify";
 
-// Define a new type for selected modules
 interface SelectedModule {
   module: Module;
   quantity: number;
@@ -32,7 +31,6 @@ interface SelectedModule {
   databaseSize?: 'small' | 'medium' | 'large';
 }
 
-// Define the monthly plans data
 const monthlyPlans = [
   {
     id: "together",
@@ -115,12 +113,10 @@ const Index = () => {
 
   useEffect(() => {
     if (selectedMission) {
-      // Get modules for the selected mission
       let newFilteredModules = modules.filter((module) =>
         module.missions.includes(selectedMission)
       );
       
-      // Reorder modules for Modernization mission
       if (selectedMission === 'modernization') {
         const orderMap: { [key: string]: number } = {
           'cicd': 1,
@@ -158,7 +154,6 @@ const Index = () => {
       if (selected.module.id === 'database' && selected.selectedServices) {
         let basePrice = 0;
         
-        // Calculate base price from selected services
         selected.selectedServices.forEach(serviceId => {
           const service = selected.module.availableServices?.find(s => s.id === serviceId);
           if (service && service.price) {
@@ -166,7 +161,6 @@ const Index = () => {
           }
         });
         
-        // Apply size multiplier
         if (selected.databaseSize) {
           let sizeMultiplier = 1;
           switch (selected.databaseSize) {
@@ -208,6 +202,15 @@ const Index = () => {
     databaseSize?: 'small' | 'medium' | 'large'
   ) => {
     setSelectedModules((prev) => {
+      if (module.id === 'cicd' && prev.some(item => item.module.id === 'gitops')) {
+        toast.error('CI/CD não pode ser selecionado junto com GitOps');
+        return prev;
+      }
+      if (module.id === 'gitops' && prev.some(item => item.module.id === 'cicd')) {
+        toast.error('GitOps não pode ser selecionado junto com CI/CD');
+        return prev;
+      }
+
       const exists = prev.find((item) => item.module.id === module.id);
       if (exists) {
         return prev.map((item) =>
@@ -237,7 +240,6 @@ const Index = () => {
     return missions.find((m) => m.id === selectedMission) || null;
   };
 
-  // Animation variants
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: { 
@@ -277,7 +279,6 @@ const Index = () => {
           </p>
         </motion.div>
 
-        {/* Monthly Plan Section */}
         <motion.div 
           variants={itemVariants}
           className="mt-16"
@@ -320,12 +321,10 @@ const Index = () => {
           </div>
         </motion.div>
         
-        {/* Add the Missions and Modules Info Section */}
         <motion.div variants={itemVariants}>
           <MissionsModulesInfo />
         </motion.div>
 
-        {/* Internal Mode Toggle and Calculator Section - Moved to bottom */}
         <motion.div variants={itemVariants} className="mt-16 text-center border-t border-gray-200 pt-10">
           <h2 className="text-xl font-semibold mb-6">Modo Interno</h2>
           
