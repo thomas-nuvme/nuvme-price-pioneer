@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
-import { SelectedModule, formatCurrency, HOURLY_RATE, Mission } from "@/utils/calculatorData";
+import { SelectedModule, formatCurrency, HOURLY_RATE, Mission, modules } from "@/utils/calculatorData";
 import AnimatedNumber from "@/components/AnimatedNumber";
 import { Icon } from "@/components/Icon";
 import { Separator } from "@/components/ui/separator";
@@ -112,6 +112,19 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
     return '';
   };
 
+  const getMissionForModule = (moduleId: string): string => {
+    const module = modules.find(m => m.id === moduleId);
+    if (!module) return '';
+    
+    const missionIds = module.missions.filter(m => m !== 'takeoff');
+    const missionNames = missionIds.map(id => {
+      const mission = missions.find(m => m.id === id);
+      return mission ? mission.name : '';
+    });
+    
+    return missionNames[0] || '';
+  };
+
   const containerVariants = {
     hidden: { opacity: 0, y: 20 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.3 } },
@@ -138,19 +151,13 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
         animate="visible"
         exit="exit"
         variants={containerVariants}
-        className="glass rounded-2xl border border-nuvme-teal/10 p-6 shadow-sm"
+        className="glass rounded-2xl border border-nuvme-teal/10 p-6 shadow-sm sticky top-4"
       >
         <div className="flex items-center mb-4">
           <div className="w-8 h-8 rounded-full bg-nuvme-teal/20 flex items-center justify-center mr-3">
-            {selectedMission ? (
-              <Icon name={selectedMission.icon} className="w-4 h-4 text-nuvme-teal" />
-            ) : (
-              <Icon name="Calculator" className="w-4 h-4 text-nuvme-teal" />
-            )}
+            <Icon name="Calculator" className="w-4 h-4 text-nuvme-teal" />
           </div>
-          <h3 className="text-lg font-medium">
-            {selectedMission ? `Missão ${selectedMission.name}` : 'Resumo do Projeto'}
-          </h3>
+          <h3 className="text-lg font-medium">Resumo do Projeto</h3>
         </div>
 
         <Separator className="mb-4" />
@@ -163,19 +170,24 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
               initial="hidden"
               animate="visible"
               variants={itemVariants}
-              className="flex justify-between items-center"
+              className="flex justify-between items-start"
             >
-              <div>
+              <div className="flex-1">
                 <p className="text-sm font-medium">
                   {selected.module.name}
                 </p>
-                {getModuleDetails(selected) && (
-                  <p className="text-xs text-muted-foreground">
-                    {getModuleDetails(selected)}
+                <div className="flex flex-col gap-0.5">
+                  {getModuleDetails(selected) && (
+                    <p className="text-xs text-muted-foreground">
+                      {getModuleDetails(selected)}
+                    </p>
+                  )}
+                  <p className="text-xs text-nuvme-teal">
+                    {getMissionForModule(selected.module.id)}
                   </p>
-                )}
+                </div>
               </div>
-              <div className="text-sm font-medium">
+              <div className="text-sm font-medium ml-4 text-right">
                 {formatCurrency(getModulePrice(selected))}
               </div>
             </motion.div>

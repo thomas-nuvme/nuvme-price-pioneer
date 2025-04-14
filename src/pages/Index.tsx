@@ -119,7 +119,7 @@ const Index = () => {
       );
       
       if (selectedMission === 'modernization') {
-        const orderMap: { [key: string]: number } = {
+        const orderMap = {
           'cicd': 1,
           'container': 2,
           'database': 3,
@@ -137,14 +137,8 @@ const Index = () => {
       }
       
       setFilteredModules(newFilteredModules);
-      
-      const validSelectedModules = selectedModules.filter(
-        (selected) => selected.module.missions.includes(selectedMission)
-      );
-      setSelectedModules(validSelectedModules);
     } else {
       setFilteredModules([]);
-      setSelectedModules([]);
     }
   }, [selectedMission]);
 
@@ -339,10 +333,10 @@ const Index = () => {
           
           <div className="flex items-center justify-center mb-6">
             <div className="flex items-center space-x-2">
-              <Switch 
-                id="internal-mode" 
-                checked={internalMode} 
-                onCheckedChange={setInternalMode} 
+              <Switch
+                id="internal-mode"
+                checked={internalMode}
+                onCheckedChange={setInternalMode}
               />
               <Label htmlFor="internal-mode" className="text-sm cursor-pointer flex items-center gap-1">
                 <Icon name="Eye" className="w-4 h-4" />
@@ -360,17 +354,17 @@ const Index = () => {
                 transition={{ duration: 0.3 }}
                 className="border border-gray-200 rounded-lg p-6 bg-white shadow-sm"
               >
-                <h3 className="font-medium text-lg mb-6">Calculadora de Preço - Missões e Módulos</h3>
-                <MissionSelector
-                  missions={missions}
-                  selectedMission={selectedMission}
-                  onSelectMission={handleSelectMission}
-                />
+                <div className="flex flex-col lg:flex-row gap-8">
+                  <div className="flex-1">
+                    <h3 className="font-medium text-lg mb-6">Calculadora de Preço - Missões e Módulos</h3>
+                    <MissionSelector
+                      missions={missions}
+                      selectedMission={selectedMission}
+                      onSelectMission={handleSelectMission}
+                    />
 
-                {selectedMission && (
-                  <div className="mt-8">
-                    <div className="flex flex-col lg:flex-row gap-8">
-                      <div className="flex-1 order-2 lg:order-1">
+                    {selectedMission && (
+                      <div className="mt-8">
                         <div className="flex items-center justify-between mb-6">
                           <h2 className="text-lg font-medium">Módulos Disponíveis</h2>
                           <button
@@ -387,34 +381,29 @@ const Index = () => {
                             <ModuleCard
                               key={module.id}
                               module={module}
-                              isSelected={selectedModules.some(
-                                (item) => item.module.id === module.id
-                              )}
+                              isSelected={selectedModules.some((item) => item.module.id === module.id)}
                               onSelect={handleSelectModule}
                               onDeselect={handleDeselectModule}
                             />
                           ))}
                         </div>
                       </div>
-
-                      <div className="w-full lg:w-80 order-1 lg:order-2 shrink-0">
-                        <PriceBreakdown
-                          selectedMission={getCurrentMission()}
-                          selectedModules={selectedModules}
-                          totalPrice={totalPrice}
-                        />
-                      </div>
-                    </div>
+                    )}
                   </div>
-                )}
+                  
+                  <div className="w-full lg:w-80 shrink-0">
+                    <PriceBreakdown
+                      selectedMission={getCurrentMission()}
+                      selectedModules={selectedModules}
+                      totalPrice={totalPrice}
+                    />
+                  </div>
+                </div>
 
                 {!selectedMission && (
                   <div className="mt-12 text-center">
                     <div className="inline-block p-4 rounded-full bg-nuvme-light-teal animate-float">
-                      <Icon 
-                        name="MousePointerClick" 
-                        className="w-8 h-8 text-nuvme-teal" 
-                      />
+                      <Icon name="MousePointerClick" className="w-8 h-8 text-nuvme-teal" />
                     </div>
                     <p className="mt-4 text-muted-foreground">
                       Selecione uma missão para começar seu cálculo de preço
