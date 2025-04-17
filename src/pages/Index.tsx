@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
@@ -175,6 +176,14 @@ const Index = () => {
           case 'simple': complexityFactor = 1; break;
           case 'complex': complexityFactor = 1.7; break;
           case 'very_complex': complexityFactor = 2.9; break;
+        }
+        newTotalPrice += selected.module.custoBase * complexityFactor;
+      } else if (['observability', 'ia', 'ml', 'serverless'].includes(selected.module.id) && selected.complexity) {
+        let complexityFactor = 1;
+        switch (selected.complexity) {
+          case 'simple': complexityFactor = 0.8; break; // 20% lower
+          case 'complex': complexityFactor = 1; break;  // base price
+          case 'very_complex': complexityFactor = 1.4; break; // 40% higher
         }
         newTotalPrice += selected.module.custoBase * complexityFactor;
       } else {

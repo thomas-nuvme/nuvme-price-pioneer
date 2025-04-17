@@ -175,6 +175,17 @@ export const calculateModuleCost = (module: Module, quantity: number = 1, comple
     return module.custoBase + (selectedServices.length * 5500);
   }
   
+  // For Security modules with complexity
+  if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre'].includes(module.id) && complexity) {
+    let complexityFactor = 1;
+    switch (complexity) {
+      case 'simple': complexityFactor = 1; break;
+      case 'complex': complexityFactor = 1.7; break;
+      case 'very_complex': complexityFactor = 2.9; break;
+    }
+    return module.custoBase * complexityFactor;
+  }
+  
   // For NextGen modules with complexity
   if (['observability', 'ia', 'ml', 'serverless'].includes(module.id) && complexity) {
     let complexityFactor = 1;

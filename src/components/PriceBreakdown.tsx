@@ -76,6 +76,16 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
       return module.custoBase * complexityFactor;
     }
     
+    if (['observability', 'ia', 'ml', 'serverless'].includes(module.id) && complexity) {
+      let complexityFactor = 1;
+      switch (complexity) {
+        case 'simple': complexityFactor = 0.8; break; // 20% lower
+        case 'complex': complexityFactor = 1; break;  // base price
+        case 'very_complex': complexityFactor = 1.4; break; // 40% higher
+      }
+      return module.custoBase * complexityFactor;
+    }
+    
     return module.custoBase + (module.variableFactor ? module.variableFactor * quantity * HOURLY_RATE : 0);
   };
 

@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -82,12 +81,22 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
       return formatCurrency(module.custoBase + (selectedServices.length * 5500));
     }
     
-    if (module.hasComplexity && complexity) {
+    if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre'].includes(module.id) && complexity) {
       let complexityFactor = 1;
       switch (complexity) {
         case 'simple': complexityFactor = 1; break;
         case 'complex': complexityFactor = 1.7; break;
         case 'very_complex': complexityFactor = 2.9; break;
+      }
+      return formatCurrency(module.custoBase * complexityFactor);
+    }
+    
+    if (['observability', 'ia', 'ml', 'serverless'].includes(module.id) && complexity) {
+      let complexityFactor = 1;
+      switch (complexity) {
+        case 'simple': complexityFactor = 0.8; break;
+        case 'complex': complexityFactor = 1; break;
+        case 'very_complex': complexityFactor = 1.4; break;
       }
       return formatCurrency(module.custoBase * complexityFactor);
     }
@@ -232,7 +241,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
               </div>
             )}
 
-            {/* Complexity Selector for security modules */}
+            {/* Complexity Selector for security and nextgen modules */}
             {module.hasComplexity && (
               <div className="mb-4">
                 <p className="text-sm font-medium mb-2">Complexidade:</p>
