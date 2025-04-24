@@ -1,16 +1,20 @@
-
-import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '@/contexts/AuthContext';
-import { InputOTP, InputOTPGroup, InputOTPSlot } from '@/components/ui/input-otp';
-import { Button } from '@/components/ui/button';
-import { Alert, AlertTitle, AlertDescription } from '@/components/ui/alert';
-import { Icon } from '@/components/Icon';
-import { motion } from 'framer-motion';
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "@/contexts/AuthContext";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { Icon } from "@/components/Icon";
+import { motion } from "framer-motion";
+import logo from "../components/images/nuvme-logo.png";
 
 const PinProtection = () => {
   const { isAuthenticated, login } = useAuth();
-  const [pin, setPin] = useState('');
+  const [pin, setPin] = useState("");
   const [error, setError] = useState(false);
   const [attempts, setAttempts] = useState(0);
   const navigate = useNavigate();
@@ -18,27 +22,27 @@ const PinProtection = () => {
   // If already authenticated, redirect using useNavigate
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/', { replace: true });
+      navigate("/", { replace: true });
     }
   }, [isAuthenticated, navigate]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     const success = login(pin);
-    
+
     if (!success) {
       setError(true);
-      setAttempts(prev => prev + 1);
+      setAttempts((prev) => prev + 1);
       // Reset PIN input
-      setPin('');
+      setPin("");
     }
   };
 
   const containerVariants = {
     hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1, 
-      transition: { duration: 0.5 } 
+    visible: {
+      opacity: 1,
+      transition: { duration: 0.5 },
     },
   };
 
@@ -48,7 +52,7 @@ const PinProtection = () => {
   }
 
   return (
-    <motion.div 
+    <motion.div
       initial="hidden"
       animate="visible"
       variants={containerVariants}
@@ -56,11 +60,7 @@ const PinProtection = () => {
     >
       <div className="max-w-md w-full bg-white rounded-lg shadow-lg p-8">
         <div className="text-center mb-8">
-          <img 
-            src="src/components/images/nuvme-logo.png" 
-            alt="Nuvme Logo" 
-            className="mx-auto w-32 mb-4"
-          />
+          <img src={logo} alt="Nuvme Logo" className="mx-auto w-32 mb-4" />
           <h1 className="text-2xl font-semibold text-nuvme-dark mb-2">
             Guia Nuvme
           </h1>
@@ -75,18 +75,15 @@ const PinProtection = () => {
             <AlertTitle>PIN Inválido</AlertTitle>
             <AlertDescription>
               O código informado não é válido. Por favor, tente novamente.
-              {attempts >= 3 && " Se precisar de ajuda, entre em contato com o administrador."}
+              {attempts >= 3 &&
+                " Se precisar de ajuda, entre em contato com o administrador."}
             </AlertDescription>
           </Alert>
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
           <div className="flex flex-col items-center gap-4">
-            <InputOTP 
-              maxLength={4} 
-              value={pin}
-              onChange={setPin}
-            >
+            <InputOTP maxLength={4} value={pin} onChange={setPin}>
               <InputOTPGroup>
                 <InputOTPSlot index={0} className="h-12 w-12" />
                 <InputOTPSlot index={1} className="h-12 w-12" />
@@ -94,9 +91,9 @@ const PinProtection = () => {
                 <InputOTPSlot index={3} className="h-12 w-12" />
               </InputOTPGroup>
             </InputOTP>
-            
-            <Button 
-              type="submit" 
+
+            <Button
+              type="submit"
               className="w-full bg-nuvme-teal hover:bg-nuvme-teal/90"
               disabled={pin.length !== 4}
             >
