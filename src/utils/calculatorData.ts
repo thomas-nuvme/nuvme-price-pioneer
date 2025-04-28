@@ -1,3 +1,4 @@
+
 export type MissionType = 'modernization' | 'security' | 'migration' | 'finops' | 'nextgen' | 'takeoff';
 
 export interface Mission {
@@ -175,7 +176,7 @@ export const calculateModuleCost = (module: Module, quantity: number = 1, comple
     return module.custoBase + (selectedServices.length * 2500);
   }
   
-  // For Security modules with complexity
+  // For Security modules with complexity AND the Arquitetura module
   if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre', 'arquitetura'].includes(module.id) && complexity) {
     let complexityFactor = 1;
     switch (complexity) {

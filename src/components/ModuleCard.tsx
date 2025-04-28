@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 import { cn } from "@/lib/utils";
@@ -81,7 +82,7 @@ const ModuleCard: React.FC<ModuleCardProps> = ({
       return formatCurrency(module.custoBase + (selectedServices.length * 5500));
     }
     
-    if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre'].includes(module.id) && complexity) {
+    if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre', 'arquitetura'].includes(module.id) && complexity) {
       let complexityFactor = 1;
       switch (complexity) {
         case 'simple': complexityFactor = 1; break;
