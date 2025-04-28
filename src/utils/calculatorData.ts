@@ -75,13 +75,13 @@ export const modules: Module[] = [
   // Missão Segurança
   { id: 'security_practices', name: 'Security Practices', description: 'Boas práticas de segurança na nuvem', missions: ['security'], horasFixas: 20, custoBase: 7200, variableUnit: 'complexidade', hasComplexity: true, icon: 'Shield' },
   { id: 'skyguard', name: 'SkyGuard', description: 'Monitoramento avançado de segurança', missions: ['security'], horasFixas: 18, custoBase: 4400, variableUnit: 'serviços', hasServices: true, availableServices: securityServices, icon: 'Eye' },
-  { id: 'security_hub', name: 'Security Hub', description: 'Gestão de conformidade com AWS Security Hub', missions: ['security'], horasFixas: 15, custoBase: 4500, variableUnit: 'complexidade', hasComplexity: true, icon: 'Lock' },
+  { id: 'security_hub', name: 'Security Hub', description: 'Gestão de conformidade com AWS Security Hub', missions: ['security'], horasFixas: 15, custoBase: 5500, variableUnit: 'complexidade', hasComplexity: true, icon: 'Lock' },
   { id: 'disaster_recovery', name: 'Disaster Recovery', description: 'Plano de recuperação de desastres', missions: ['security'], horasFixas: 24, custoBase: 7200, variableUnit: 'complexidade', hasComplexity: true, icon: 'CloudRain' },
   { id: 'conta_cofre', name: 'Conta Cofre', description: 'Gerenciamento seguro de credenciais', missions: ['security'], horasFixas: 12, custoBase: 3600, variableUnit: 'complexidade', hasComplexity: true, icon: 'KeyRound' },
 
   // Missão Migração
   { id: 'on_premises', name: 'On Premises', description: 'Migração de infraestrutura local para nuvem', missions: ['migration'], horasFixas: 30, custoBase: 9000, variableFactor: 10, variableUnit: 'VMs', icon: 'Server' },
-  { id: 'cloud', name: 'Cloud', description: 'Migração entre clouds', missions: ['migration'], horasFixas: 25, custoBase: 7500, variableFactor: 8, variableUnit: 'workloads', icon: 'Cloud' },
+  { id: 'cloud', name: 'Cloud', description: 'Migração entre clouds', missions: ['migration'], horasFixas: 25, custoBase: 8500, variableFactor: 8, variableUnit: 'workloads', icon: 'Cloud' },
 
   // Missão FinOps
   { id: 'redução_custos', name: 'Redução de Custos', description: 'Análise e otimização de custos', missions: ['finops'], horasFixas: 12, custoBase: 6800, icon: 'PiggyBank' },
@@ -116,7 +116,7 @@ export const modules: Module[] = [
     description: 'Desenvolvimento de modelos de aprendizado', 
     missions: ['nextgen'], 
     horasFixas: 24, 
-    custoBase: 3500,
+    custoBase: 35000,
     icon: 'Network',
     hasComplexity: true,
     variableUnit: 'complexidade' 
@@ -127,7 +127,7 @@ export const modules: Module[] = [
     description: 'Aplicações sem servidor', 
     missions: ['nextgen'], 
     horasFixas: 18, 
-    custoBase: 2100,
+    custoBase: 21000,
     icon: 'ServerCrash',
     hasComplexity: true,
     variableUnit: 'complexidade' 
@@ -136,7 +136,7 @@ export const modules: Module[] = [
   // TakeOff (pode ser adicionado a todas as missões) - reordered as requested for last two
   { id: 'arquitetura', name: 'Arquitetura', description: 'Definição de arquitetura otimizada', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 12, custoBase: 6000, variableUnit: 'complexidade', hasComplexity: true, icon: 'Blocks' },
   { id: 'faturamento', name: 'Faturamento', description: 'Faturamento em reais via boleto', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 0, custoBase: 0, icon: 'Receipt' },
-  { id: 'painel_nuvme', name: 'Painel Nuvme', description: 'Ferramenta de monitoramento de custos', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 0, custoBase: 0, variableFactor: 1, variableUnit: 'servidores', minValue: 1, maxValue: 50, defaultValue: 5, icon: 'LayoutDashboard' },
+  { id: 'painel_nuvme', name: 'Painel Nuvme', description: 'Ferramenta de monitoramento de custos', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 0, custoBase: 0, variableFactor: 1, variableUnit: 'servidores', minValue: 1, maxValue: 50, defaultValue: 1, icon: 'LayoutDashboard' },
 ];
 
 // Constantes de cálculo
@@ -172,7 +172,7 @@ export const calculateModuleCost = (module: Module, quantity: number = 1, comple
   
   // For SkyGuard module with selected services
   if (module.id === 'skyguard' && selectedServices) {
-    return module.custoBase + (selectedServices.length * 5500);
+    return module.custoBase + (selectedServices.length * 2500);
   }
   
   // For Security modules with complexity
