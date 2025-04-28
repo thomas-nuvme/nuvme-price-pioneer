@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
@@ -194,10 +195,11 @@ const Index = () => {
           selected.module.custoBase + selected.selectedServices.length * 5500;
       } else if (
         [
-          "security_practices",
-          "security_hub",
-          "disaster_recovery",
+          "security_practices", 
+          "security_hub", 
+          "disaster_recovery", 
           "conta_cofre",
+          "arquitetura"
         ].includes(selected.module.id) &&
         selected.complexity
       ) {
