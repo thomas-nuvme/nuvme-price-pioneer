@@ -134,7 +134,7 @@ export const modules: Module[] = [
   },
 
   // TakeOff (pode ser adicionado a todas as missões) - reordered as requested for last two
-  { id: 'arquitetura', name: 'Arquitetura', description: 'Definição de arquitetura otimizada', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 12, custoBase: 5200, icon: 'Blocks' },
+  { id: 'arquitetura', name: 'Arquitetura', description: 'Definição de arquitetura otimizada', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 12, custoBase: 6000, variableUnit: 'complexidade', hasComplexity: true, icon: 'Blocks' },
   { id: 'faturamento', name: 'Faturamento', description: 'Faturamento em reais via boleto', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 0, custoBase: 0, icon: 'Receipt' },
   { id: 'painel_nuvme', name: 'Painel Nuvme', description: 'Ferramenta de monitoramento de custos', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 0, custoBase: 0, variableFactor: 1, variableUnit: 'servidores', minValue: 1, maxValue: 50, defaultValue: 5, icon: 'LayoutDashboard' },
 ];
@@ -176,7 +176,7 @@ export const calculateModuleCost = (module: Module, quantity: number = 1, comple
   }
   
   // For Security modules with complexity
-  if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre'].includes(module.id) && complexity) {
+  if (['security_practices', 'security_hub', 'disaster_recovery', 'conta_cofre', 'arquitetura'].includes(module.id) && complexity) {
     let complexityFactor = 1;
     switch (complexity) {
       case 'simple': complexityFactor = 1; break;
