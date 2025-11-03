@@ -22,6 +22,7 @@ const monthlyPlans = [
     monthlyPrice: 3000,
     setupPrice: 6000,
     description: 'Módulo arquitetura + um módulo de escolha',
+    includedModules: 2, // arquitetura + 1 módulo
   },
   {
     id: 'advanced',
@@ -29,6 +30,7 @@ const monthlyPlans = [
     monthlyPrice: 6000,
     setupPrice: 7500,
     description: 'Módulo arquitetura + dois módulos de escolha',
+    includedModules: 3, // arquitetura + 2 módulos
   },
   {
     id: 'premier',
@@ -36,6 +38,7 @@ const monthlyPlans = [
     monthlyPrice: 12000,
     setupPrice: 15000,
     description: 'Módulo arquitetura + três módulos de escolha',
+    includedModules: 4, // arquitetura + 3 módulos
   },
 ];
 
@@ -46,20 +49,6 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
 }) => {
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);
   const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
-
-  if (selectedModules.length === 0) {
-    return (
-      <div className="glass rounded-2xl border border-nuvme-teal/10 p-6 shadow-sm">
-        <div className="flex items-center mb-4">
-          <div className="w-8 h-8 rounded-full bg-nuvme-teal/20 flex items-center justify-center mr-3">
-            <Icon name="Calculator" className="w-4 h-4 text-nuvme-teal" />
-          </div>
-          <h3 className="text-lg font-medium">Resumo do Projeto</h3>
-        </div>
-        <p className="text-sm text-muted-foreground">Selecione módulos para calcular o preço do projeto.</p>
-      </div>
-    );
-  }
 
   const getModulePrice = (selected: SelectedModule): number => {
     const { module, quantity, complexity, selectedServices, databaseSize } = selected;
@@ -175,11 +164,44 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
     }),
   };
 
-  const discountAmount = (totalPrice * discountPercentage) / 100;
-  const planPrice = selectedPlan 
-    ? (monthlyPlans.find(p => p.id === selectedPlan)?.setupPrice || 0)
-    : 0;
-  const finalPrice = totalPrice - discountAmount + planPrice;
+  // Calcular preço considerando módulos incluídos no plano
+  const calculateFinalPrice = () => {
+    const plan = monthlyPlans.find(p => p.id === selectedPlan);
+    
+    if (!plan) {
+      // Sem plano: apenas soma dos módulos - desconto
+      const discountAmount = (totalPrice * discountPercentage) / 100;
+      return totalPrice - discountAmount;
+    }
+    
+    // Com plano: setup + módulos extras (acima do incluído)
+    const totalModules = selectedModules.length;
+    const includedCount = plan.includedModules;
+    
+    if (totalModules <= includedCount) {
+      // Todos os módulos estão incluídos no plano
+      const discountAmount = (plan.setupPrice * discountPercentage) / 100;
+      return plan.setupPrice - discountAmount;
+    }
+    
+    // Há módulos extras: calcular preço apenas dos módulos que excedem o incluído
+    const extraModules = selectedModules.slice(includedCount);
+    let extraModulesPrice = 0;
+    
+    extraModules.forEach(selected => {
+      extraModulesPrice += getModulePrice(selected);
+    });
+    
+    const subtotal = plan.setupPrice + extraModulesPrice;
+    const discountAmount = (subtotal * discountPercentage) / 100;
+    return subtotal - discountAmount;
+  };
+
+  const finalPrice = calculateFinalPrice();
+  const plan = monthlyPlans.find(p => p.id === selectedPlan);
+  const includedModulesCount = plan?.includedModules || 0;
+  const totalModulesCount = selectedModules.length;
+  const extraModulesCount = Math.max(0, totalModulesCount - includedModulesCount);
 
   return (
     <AnimatePresence>
@@ -200,50 +222,62 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
 
         <Separator className="mb-4" />
 
-        <div className="space-y-3 mb-6">
-          {selectedModules.map((selected, index) => (
-            <motion.div
-              key={selected.module.id}
-              custom={index}
-              initial="hidden"
-              animate="visible"
-              variants={itemVariants}
-              className="flex justify-between items-start"
-            >
-              <div className="flex-1">
-                <p className="text-sm font-medium">
-                  {selected.module.name}
-                </p>
-                <div className="flex flex-col gap-0.5">
-                  {getModuleDetails(selected) && (
-                    <p className="text-xs text-muted-foreground">
-                      {getModuleDetails(selected)}
+        {selectedModules.length > 0 ? (
+          <div className="space-y-3 mb-6">
+            {selectedModules.map((selected, index) => {
+              const isIncluded = selectedPlan && index < includedModulesCount;
+              return (
+                <motion.div
+                  key={selected.module.id}
+                  custom={index}
+                  initial="hidden"
+                  animate="visible"
+                  variants={itemVariants}
+                  className="flex justify-between items-start"
+                >
+                  <div className="flex-1">
+                    <p className="text-sm font-medium">
+                      {selected.module.name}
+                      {isIncluded && (
+                        <span className="ml-2 text-xs text-green-600 font-normal">
+                          (Incluso no plano)
+                        </span>
+                      )}
                     </p>
-                  )}
-                  <p className="text-xs text-nuvme-teal">
-                    {getMissionForModule(selected.module.id)}
-                  </p>
-                </div>
-              </div>
-              <div className="text-sm font-medium ml-4 text-right">
-                {formatCurrency(getModulePrice(selected))}
-              </div>
-            </motion.div>
-          ))}
-        </div>
+                    <div className="flex flex-col gap-0.5">
+                      {getModuleDetails(selected) && (
+                        <p className="text-xs text-muted-foreground">
+                          {getModuleDetails(selected)}
+                        </p>
+                      )}
+                      <p className="text-xs text-nuvme-teal">
+                        {getMissionForModule(selected.module.id)}
+                      </p>
+                    </div>
+                  </div>
+                  <div className="text-sm font-medium ml-4 text-right">
+                    {isIncluded ? (
+                      <span className="text-green-600">R$ 0</span>
+                    ) : (
+                      formatCurrency(getModulePrice(selected))
+                    )}
+                  </div>
+                </motion.div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="mb-6 text-center py-4">
+            <p className="text-sm text-muted-foreground">
+              {selectedPlan 
+                ? "Plano selecionado. Adicione módulos ou finalize apenas com o plano."
+                : "Selecione módulos ou um plano mensal para calcular o preço."}
+            </p>
+          </div>
+        )}
 
         <div className="mt-4 pt-3 border-t border-border">
           <div className="space-y-4">
-            <div className="flex justify-between items-center">
-              <span className="font-medium">Subtotal Módulos</span>
-              <AnimatedNumber 
-                value={totalPrice} 
-                formatter={formatCurrency} 
-                className="text-lg font-semibold text-nuvme-blue"
-                duration={800}
-              />
-            </div>
-
             <div className="flex flex-col gap-2">
               <Label htmlFor="monthly-plan">Plano Mensal (Opcional)</Label>
               <select
@@ -267,9 +301,30 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
             </div>
 
             {selectedPlan && (
-              <div className="flex justify-between items-center text-sm">
-                <span>Setup do Plano</span>
-                <span className="font-medium">{formatCurrency(planPrice)}</span>
+              <>
+                <div className="flex justify-between items-center text-sm">
+                  <span>Setup do Plano</span>
+                  <span className="font-medium">{formatCurrency(plan?.setupPrice || 0)}</span>
+                </div>
+                
+                {extraModulesCount > 0 && (
+                  <div className="flex justify-between items-center text-sm text-muted-foreground">
+                    <span>{extraModulesCount} módulo(s) extra(s)</span>
+                    <span>{formatCurrency(selectedModules.slice(includedModulesCount).reduce((sum, m) => sum + getModulePrice(m), 0))}</span>
+                  </div>
+                )}
+              </>
+            )}
+
+            {!selectedPlan && selectedModules.length > 0 && (
+              <div className="flex justify-between items-center">
+                <span className="font-medium">Subtotal Módulos</span>
+                <AnimatedNumber 
+                  value={totalPrice} 
+                  formatter={formatCurrency} 
+                  className="text-lg font-semibold text-nuvme-blue"
+                  duration={800}
+                />
               </div>
             )}
 
@@ -287,13 +342,6 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
               />
             </div>
 
-            {discountPercentage > 0 && (
-              <div className="flex justify-between items-center text-sm text-muted-foreground">
-                <span>Valor do desconto</span>
-                <span>{formatCurrency(discountAmount)}</span>
-              </div>
-            )}
-
             <div className="flex justify-between items-center pt-2 border-t">
               <span className="font-medium">Preço Total Final</span>
               <AnimatedNumber 
@@ -307,7 +355,7 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
             {selectedPlan && (
               <div className="mt-2 p-3 bg-nuvme-teal/10 rounded-lg">
                 <p className="text-xs text-muted-foreground">
-                  + {formatCurrency(monthlyPlans.find(p => p.id === selectedPlan)?.monthlyPrice || 0)}/mês de suporte
+                  + {formatCurrency(plan?.monthlyPrice || 0)}/mês de suporte
                 </p>
               </div>
             )}
