@@ -248,40 +248,6 @@ const missionsInfo: MissionInfo[] = [
       }
     ],
     conclusion: "Essa missão é ideal para: Empresas visionárias que enxergam tecnologia como diferencial estratégico, desejam acelerar inovação e adotar IA, automação e observabilidade para crescer com eficiência."
-  },
-  {
-    id: "takeoff",
-    title: "Missão: TakeOff",
-    summary: "TakeOff é o ponto de partida de toda jornada na Nuvme. Uma fundação sólida com foco em boas práticas, arquitetura otimizada e controle financeiro. Aqui, garantimos que todo cliente esteja pronto para decolar com segurança e previsibilidade.",
-    modules: [
-      {
-        id: "arquitetura",
-        icon: "Blocks",
-        title: "Módulo Arquitetura",
-        subtitle: "Fundação sólida",
-        description: "Avaliamos e implementamos a infraestrutura conforme boas práticas da nuvem, garantindo performance, segurança e escalabilidade. Inclui recomendações, ajustes e validação técnica.",
-        forWho: "Empresas que estão começando na nuvem ou precisam validar se sua arquitetura está adequada.",
-        example: "Software house que está migrando para AWS e precisa garantir que o ambiente esteja bem estruturado."
-      },
-      {
-        id: "faturamento",
-        icon: "Receipt",
-        title: "Módulo Faturamento",
-        subtitle: "Simplicidade financeira",
-        description: "Oferecemos faturamento em reais com boletos e relatórios de consumo para empresas brasileiras, facilitando controle e previsibilidade financeira.",
-        forWho: "Clientes brasileiros que buscam simplificar os pagamentos e evitar burocracia cambial.",
-        example: "Empresa de médio porte que precisa integrar os custos AWS à contabilidade em reais."
-      },
-      {
-        id: "painel_nuvme",
-        icon: "LayoutDashboard",
-        title: "Painel Nuvme",
-        subtitle: "Controle visual",
-        description: "Disponibilizamos um painel intuitivo com gestão de custos, alertas de consumo e visibilidade sobre seus recursos na nuvem.",
-        forWho: "Qualquer empresa que deseja controle completo e simplificado sobre sua conta AWS.",
-        example: "Startup que quer receber alertas de gasto por serviço e controlar melhor o uso de recursos."
-      }
-    ]
   }
 ];
 

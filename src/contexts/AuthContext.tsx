@@ -10,7 +10,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Set your PIN here - change this value whenever you need a new PIN
-const CORRECT_PIN = "1234";
+const CORRECT_PIN = "2015";
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);

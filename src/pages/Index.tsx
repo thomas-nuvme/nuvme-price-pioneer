@@ -27,6 +27,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import MissionsModulesInfo from "@/components/MissionsModulesInfo";
 import PlanQuizButton from "@/components/PlanQuizButton";
+import MissionQuizButton from '@/components/MissionQuizButton';
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { useToast } from "@/hooks/use-toast";
@@ -440,6 +441,11 @@ const Index = () => {
                     <h3 className="font-medium text-lg mb-6">
                       Calculadora de Preço - Missões e Módulos
                     </h3>
+                    
+                    <div className="flex justify-center mb-6">
+                      <MissionQuizButton />
+                    </div>
+                    
                     <MissionSelector
                       missions={missions}
                       selectedMission={selectedMission}

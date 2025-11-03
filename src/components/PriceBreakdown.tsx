@@ -127,8 +127,7 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
     const module = modules.find(m => m.id === moduleId);
     if (!module) return '';
     
-    const missionIds = module.missions.filter(m => m !== 'takeoff');
-    const missionNames = missionIds.map(id => {
+    const missionNames = module.missions.map(id => {
       const mission = missions.find(m => m.id === id);
       return mission ? mission.name : '';
     });

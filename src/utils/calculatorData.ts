@@ -1,5 +1,5 @@
 
-export type MissionType = 'modernization' | 'security' | 'migration' | 'finops' | 'nextgen' | 'takeoff';
+export type MissionType = 'modernization' | 'security' | 'migration' | 'finops' | 'nextgen';
 
 export interface Mission {
   id: MissionType;
@@ -42,7 +42,6 @@ export const missions: Mission[] = [
   { id: 'migration', name: 'Migração', description: 'Migre suas cargas de trabalho para a nuvem', icon: 'MoveRight' },
   { id: 'finops', name: 'FinOps', description: 'Otimize seus custos e gastos na nuvem', icon: 'TrendingDown' },
   { id: 'nextgen', name: 'NextGen', description: 'Implemente tecnologias de próxima geração', icon: 'Zap' },
-  { id: 'takeoff', name: 'TakeOff', description: 'Módulos essenciais para todas as missões', icon: 'Layers' },
 ];
 
 // AWS Security Services
@@ -134,10 +133,10 @@ export const modules: Module[] = [
     variableUnit: 'complexidade' 
   },
 
-  // TakeOff (pode ser adicionado a todas as missões) - reordered as requested for last two
-  { id: 'arquitetura', name: 'Arquitetura', description: 'Definição de arquitetura otimizada', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 12, custoBase: 6000, variableUnit: 'complexidade', hasComplexity: true, icon: 'Blocks' },
-  { id: 'faturamento', name: 'Faturamento', description: 'Faturamento em reais via boleto', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 0, custoBase: 0, icon: 'Receipt' },
-  { id: 'painel_nuvme', name: 'Painel Nuvme', description: 'Ferramenta de monitoramento de custos', missions: ['takeoff', 'nextgen', 'modernization','security','migration','finops'], horasFixas: 0, custoBase: 0, variableFactor: 1, variableUnit: 'servidores', minValue: 1, maxValue: 50, defaultValue: 1, icon: 'LayoutDashboard' },
+  // Módulos disponíveis para todas as missões
+  { id: 'arquitetura', name: 'Arquitetura', description: 'Definição de arquitetura otimizada', missions: ['nextgen', 'modernization','security','migration','finops'], horasFixas: 12, custoBase: 6000, variableUnit: 'complexidade', hasComplexity: true, icon: 'Blocks' },
+  { id: 'faturamento', name: 'Faturamento', description: 'Faturamento em reais via boleto', missions: ['nextgen', 'modernization','security','migration','finops'], horasFixas: 0, custoBase: 0, icon: 'Receipt' },
+  { id: 'painel_nuvme', name: 'Painel Nuvme', description: 'Ferramenta de monitoramento de custos', missions: ['nextgen', 'modernization','security','migration','finops'], horasFixas: 0, custoBase: 0, variableFactor: 1, variableUnit: 'servidores', minValue: 1, maxValue: 50, defaultValue: 1, icon: 'LayoutDashboard' },
 ];
 
 // Constantes de cálculo
