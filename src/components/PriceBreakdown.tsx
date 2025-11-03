@@ -15,12 +15,37 @@ interface PriceBreakdownProps {
   totalPrice: number;
 }
 
+const monthlyPlans = [
+  {
+    id: 'essential',
+    name: 'Essential',
+    monthlyPrice: 3000,
+    setupPrice: 6000,
+    description: 'Módulo arquitetura + um módulo de escolha',
+  },
+  {
+    id: 'advanced',
+    name: 'Advanced',
+    monthlyPrice: 6000,
+    setupPrice: 7500,
+    description: 'Módulo arquitetura + dois módulos de escolha',
+  },
+  {
+    id: 'premier',
+    name: 'Premier',
+    monthlyPrice: 12000,
+    setupPrice: 15000,
+    description: 'Módulo arquitetura + três módulos de escolha',
+  },
+];
+
 const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
   selectedMission,
   selectedModules,
   totalPrice,
 }) => {
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);
+  const [selectedPlan, setSelectedPlan] = useState<string | null>(null);
 
   if (selectedModules.length === 0) {
     return (
@@ -151,7 +176,10 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
   };
 
   const discountAmount = (totalPrice * discountPercentage) / 100;
-  const finalPrice = totalPrice - discountAmount;
+  const planPrice = selectedPlan 
+    ? (monthlyPlans.find(p => p.id === selectedPlan)?.setupPrice || 0)
+    : 0;
+  const finalPrice = totalPrice - discountAmount + planPrice;
 
   return (
     <AnimatePresence>
@@ -207,7 +235,7 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
         <div className="mt-4 pt-3 border-t border-border">
           <div className="space-y-4">
             <div className="flex justify-between items-center">
-              <span className="font-medium">Subtotal</span>
+              <span className="font-medium">Subtotal Módulos</span>
               <AnimatedNumber 
                 value={totalPrice} 
                 formatter={formatCurrency} 
@@ -215,6 +243,35 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
                 duration={800}
               />
             </div>
+
+            <div className="flex flex-col gap-2">
+              <Label htmlFor="monthly-plan">Plano Mensal (Opcional)</Label>
+              <select
+                id="monthly-plan"
+                value={selectedPlan || ''}
+                onChange={(e) => setSelectedPlan(e.target.value || null)}
+                className="w-full h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+              >
+                <option value="">Nenhum</option>
+                {monthlyPlans.map(plan => (
+                  <option key={plan.id} value={plan.id}>
+                    {plan.name} - {formatCurrency(plan.monthlyPrice)}/mês
+                  </option>
+                ))}
+              </select>
+              {selectedPlan && (
+                <p className="text-xs text-muted-foreground mt-1">
+                  {monthlyPlans.find(p => p.id === selectedPlan)?.description}
+                </p>
+              )}
+            </div>
+
+            {selectedPlan && (
+              <div className="flex justify-between items-center text-sm">
+                <span>Setup do Plano</span>
+                <span className="font-medium">{formatCurrency(planPrice)}</span>
+              </div>
+            )}
 
             <div className="flex flex-col gap-2">
               <Label htmlFor="discount">Desconto (%)</Label>
@@ -246,6 +303,14 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
                 duration={800}
               />
             </div>
+
+            {selectedPlan && (
+              <div className="mt-2 p-3 bg-nuvme-teal/10 rounded-lg">
+                <p className="text-xs text-muted-foreground">
+                  + {formatCurrency(monthlyPlans.find(p => p.id === selectedPlan)?.monthlyPrice || 0)}/mês de suporte
+                </p>
+              </div>
+            )}
           </div>
         </div>
       </motion.div>

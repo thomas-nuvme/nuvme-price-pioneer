@@ -358,8 +358,9 @@ const Index = () => {
             Nossos Planos Mensais
           </h2>
 
-          <div className="flex justify-center mb-8">
+          <div className="flex flex-col items-center gap-4 mb-8">
             <PlanQuizButton />
+            <MissionQuizButton />
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -441,10 +442,6 @@ const Index = () => {
                     <h3 className="font-medium text-lg mb-6">
                       Calculadora de Preço - Missões e Módulos
                     </h3>
-                    
-                    <div className="flex justify-center mb-6">
-                      <MissionQuizButton />
-                    </div>
                     
                     <MissionSelector
                       missions={missions}
