@@ -1,4 +1,4 @@
-export type PlanType = 'together' | 'essential' | 'advanced' | 'premier';
+export type PlanType = 'essential' | 'advanced' | 'premier';
 
 export interface Plan {
   id: PlanType;
@@ -26,35 +26,7 @@ export interface Question {
 }
 
 export const plans: Plan[] = [
-  { 
-    id: 'together', 
-    name: 'Together', 
-    description: 'Para empresas pequenas com time interno de cloud', 
-    color: '#B2D4E8',
-    tailwindColor: 'bg-nuvme-light-blue',
-    textColor: 'text-nuvme-dark',
-    tagline: 'Para empresas que querem crescer na AWS, mas não precisam de suporte técnico contínuo',
-    included: [
-      'Faturamento AWS via Reais → Gestão simplificada dos custos AWS, eliminando complexidades cambiais e permitindo pagamento via boleto.',
-      'Monitoramento e Alertas → Receba notificações sobre picos de uso, falhas potenciais e oportunidades de otimização no ambiente AWS.',
-      'Gerente de Contas com Reuniões Agendadas → Um contato direto para discutir melhorias e estratégias no ambiente AWS.',
-      'Laboratório de Inovação (PoCs) → Suporte para experimentação de novas tecnologias AWS e testes de conceito.',
-      'Relatórios de Custos → Relatórios periódicos com insights para previsibilidade financeira.',
-      'Painel Nuvme → Ferramenta para gestão centralizada da AWS, permitindo acompanhar custos e infraestrutura.'
-    ],
-    notIncluded: [
-      'Suporte Técnico Contínuo → A Nuvme não atuará diretamente em incidentes ou problemas técnicos.',
-      'Intervenções Operacionais → Não realizamos ajustes no ambiente AWS do cliente.',
-      'Correção Imediata de Problemas → Se ocorrer uma falha crítica, o cliente será notificado, mas a ação deve ser dele.'
-    ],
-    forWho: [
-      'Startups e pequenas empresas que ainda não precisam de suporte técnico ativo, mas querem acompanhamento estratégico.',
-      'Empresas que já têm um time interno de cloud e só precisam de monitoramento e gestão de custos.',
-      'Negócios que buscam previsibilidade financeira, mas não precisam de respostas imediatas a incidentes.'
-    ],
-    example: 'Uma fintech de médio porte está crescendo e usa AWS para rodar seu sistema. Eles já têm um engenheiro de DevOps interno, então não precisam de suporte técnico da Nuvme. No entanto, querem monitoramento de custos, relatórios financeiros detalhados e um gerente de contas para discutir otimizações estratégicas. O plano Together atende perfeitamente.'
-  },
-  { 
+  {
     id: 'essential', 
     name: 'Essential', 
     description: 'Suporte imediato para empresas em expansão', 
@@ -144,11 +116,6 @@ export const questions: Question[] = [
     helpText: 'Ajuda a definir o nível de suporte técnico necessário para sua empresa',
     options: [
       { 
-        id: 'scheduled', 
-        text: 'Prefiro agendar reuniões com o time de especialistas quando necessário.', 
-        plans: ['together'] 
-      },
-      { 
         id: 'continuous', 
         text: 'Preciso de suporte técnico contínuo com resposta rápida a incidentes.', 
         plans: ['essential'] 
@@ -170,11 +137,6 @@ export const questions: Question[] = [
     text: 'Qual o tamanho atual da sua empresa ou operação em nuvem?',
     helpText: 'Ajuda a entender a complexidade do ambiente e suporte necessário',
     options: [
-      { 
-        id: 'small', 
-        text: 'Pequena ou em fase inicial. Temos poucos workloads na AWS.', 
-        plans: ['together'] 
-      },
       { 
         id: 'medium', 
         text: 'Porte médio, com infraestrutura em crescimento e equipe técnica enxuta.', 
@@ -198,11 +160,6 @@ export const questions: Question[] = [
     helpText: 'Ajuda a definir a regularidade de suporte técnico necessário',
     options: [
       { 
-        id: 'occasional', 
-        text: 'Apenas quando surgem dúvidas pontuais ou para alinhamentos estratégicos.', 
-        plans: ['together'] 
-      },
-      { 
         id: 'weekly', 
         text: 'Quase toda semana temos alguma demanda de suporte ou ajustes técnicos.', 
         plans: ['essential'] 
@@ -224,11 +181,6 @@ export const questions: Question[] = [
     text: 'Qual seu nível de maturidade em Cloud/DevOps?',
     helpText: 'Ajuda a identificar o nível de suporte e melhoria contínua necessários',
     options: [
-      { 
-        id: 'beginner', 
-        text: 'Estamos começando e queremos apoio para crescer com segurança.', 
-        plans: ['together'] 
-      },
       { 
         id: 'intermediate', 
         text: 'Já usamos algumas práticas de DevOps e estamos estruturando melhor o ambiente.', 
@@ -252,11 +204,6 @@ export const questions: Question[] = [
     helpText: 'Ajuda a determinar o nível de FinOps e otimização de custos necessários',
     options: [
       { 
-        id: 'basic', 
-        text: 'Queremos visibilidade, relatórios e previsibilidade de gastos.', 
-        plans: ['together'] 
-      },
-      { 
         id: 'assistance', 
         text: 'Buscamos ajuda para entender e controlar custos com mais eficiência.', 
         plans: ['essential'] 
@@ -278,11 +225,6 @@ export const questions: Question[] = [
     text: 'Que tipo de acompanhamento você valoriza?',
     helpText: 'Ajuda a definir o tipo de relacionamento com a equipe de suporte',
     options: [
-      { 
-        id: 'light', 
-        text: 'Cadência leve com reuniões estratégicas pontuais.', 
-        plans: ['together'] 
-      },
       { 
         id: 'frequent', 
         text: 'Contato frequente, com abertura de chamados e suporte prático.', 
@@ -306,11 +248,6 @@ export const questions: Question[] = [
     helpText: 'Ajuda a definir os canais de comunicação preferidos',
     options: [
       { 
-        id: 'scheduled-meetings', 
-        text: 'Prefiro ter reuniões agendadas conforme necessário.', 
-        plans: ['together'] 
-      },
-      { 
         id: 'tickets', 
         text: 'Quero abrir chamados e receber suporte por ticket ou WhatsApp.', 
         plans: ['essential'] 
@@ -331,11 +268,10 @@ export const questions: Question[] = [
 
 export const getPlanRecommendation = (selectedOptions: Record<string, string>): PlanType => {
   // Initialize with lowest tier plan
-  let recommendedPlan: PlanType = 'together';
+  let recommendedPlan: PlanType = 'essential';
   
   // Count recommendations for each plan type
   const planCounts: Record<PlanType, number> = {
-    'together': 0,
     'essential': 0,
     'advanced': 0,
     'premier': 0
@@ -383,14 +319,13 @@ function getRequiredPlans(selectedOptions: Record<string, string>): PlanType[] {
     
     // If the option is only compatible with advanced or premier
     if (option.plans.includes('premier') && !option.plans.includes('advanced') && 
-        !option.plans.includes('essential') && !option.plans.includes('together')) {
+        !option.plans.includes('essential')) {
       requiredPlans.push('premier');
     }
-    else if (option.plans.includes('advanced') && !option.plans.includes('essential') && 
-        !option.plans.includes('together')) {
+    else if (option.plans.includes('advanced') && !option.plans.includes('essential')) {
       requiredPlans.push('advanced');
     }
-    else if (option.plans.includes('essential') && !option.plans.includes('together')) {
+    else if (option.plans.includes('essential')) {
       requiredPlans.push('essential');
     }
   }
@@ -415,12 +350,7 @@ export const suggestUpgrade = (selectedOptions: Record<string, string>, recommen
                            selectedOptions['cost-management'] === 'advanced-finops';
   const needsDedicatedComm = selectedOptions['communication'] === 'slack-support';
   
-  if (recommendedPlan === 'together') {
-    if (needsCriticalSupport || needsOptimization) {
-      suggestedUpgrade = 'essential';
-      reason = 'Você indicou que precisa de suporte técnico ativo para problemas críticos, o que não está disponível no plano Together.';
-    }
-  } else if (recommendedPlan === 'essential') {
+  if (recommendedPlan === 'essential') {
     if (needsInnovation || needsOptimization || needsDedicatedComm) {
       suggestedUpgrade = 'advanced';
       reason = 'Sua necessidade de otimização contínua e comunicação via Slack seria melhor atendida pelo plano Advanced com Squad DevOps dedicado.';

@@ -3,14 +3,19 @@ import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { AuthProvider } from "./contexts/AuthContext";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/AppSidebar";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
-import PlanQuiz from "./components/PlanQuiz";
 import PinProtection from "./pages/PinProtection";
 import Welcome from "./pages/Welcome";
+import MissoesModulos from "./pages/MissoesModulos";
+import Planos from "./pages/Planos";
+import Diagnosticos from "./pages/Diagnosticos";
+import Calculadora from "./pages/Calculadora";
 
 const queryClient = new QueryClient();
 
@@ -26,20 +31,31 @@ const App = () => (
             <Route path="/pin" element={<PinProtection />} />
             <Route path="/welcome" element={<Welcome />} />
             
-            {/* Protected Routes */}
-            <Route path="/" element={
+            {/* Protected Routes with Sidebar */}
+            <Route path="/*" element={
               <ProtectedRoute>
-                <Index />
+                <SidebarProvider>
+                  <div className="flex min-h-screen w-full">
+                    <AppSidebar />
+                    <div className="flex-1 flex flex-col">
+                      <header className="h-14 flex items-center border-b px-4 sticky top-0 bg-background z-10">
+                        <SidebarTrigger />
+                      </header>
+                      <main className="flex-1">
+                        <Routes>
+                          <Route path="/" element={<Index />} />
+                          <Route path="/missoes-modulos" element={<MissoesModulos />} />
+                          <Route path="/planos" element={<Planos />} />
+                          <Route path="/diagnosticos" element={<Diagnosticos />} />
+                          <Route path="/calculadora" element={<Calculadora />} />
+                          <Route path="*" element={<NotFound />} />
+                        </Routes>
+                      </main>
+                    </div>
+                  </div>
+                </SidebarProvider>
               </ProtectedRoute>
             } />
-            <Route path="/plano" element={
-              <ProtectedRoute>
-                <PlanQuiz />
-              </ProtectedRoute>
-            } />
-            
-            {/* Catch-all route - redirect to PIN if not authenticated */}
-            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </TooltipProvider>

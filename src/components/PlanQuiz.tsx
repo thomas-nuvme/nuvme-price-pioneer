@@ -119,8 +119,6 @@ const PlanQuiz = () => {
 
   const getPlanIcon = (planId: PlanType) => {
     switch (planId) {
-      case "together":
-        return "Users";
       case "essential":
         return "Zap";
       case "advanced":
@@ -134,8 +132,6 @@ const PlanQuiz = () => {
 
   const getPlanEmoji = (planId: PlanType) => {
     switch (planId) {
-      case "together":
-        return "🚀";
       case "essential":
         return "⚡";
       case "advanced":
@@ -216,7 +212,7 @@ const PlanQuiz = () => {
               onValueChange={(value) => setSelectedPlanTab(value as PlanType)}
               className="w-full"
             >
-              <TabsList className="grid grid-cols-4 w-full">
+              <TabsList className="grid grid-cols-3 w-full">
                 {plans.map((plan) => (
                   <TabsTrigger
                     key={plan.id}
