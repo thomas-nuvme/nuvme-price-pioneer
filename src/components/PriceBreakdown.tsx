@@ -21,24 +21,24 @@ const monthlyPlans = [
     name: 'Essential',
     monthlyPrice: 3000,
     setupPrice: 6000,
-    description: 'Módulo arquitetura + um módulo de escolha',
-    includedModules: 2, // arquitetura + 1 módulo
+    description: '2 módulos gratuitos',
+    includedModules: 2,
   },
   {
     id: 'advanced',
     name: 'Advanced',
     monthlyPrice: 6000,
     setupPrice: 7500,
-    description: 'Módulo arquitetura + dois módulos de escolha',
-    includedModules: 3, // arquitetura + 2 módulos
+    description: '3 módulos gratuitos',
+    includedModules: 3,
   },
   {
     id: 'premier',
     name: 'Premier',
     monthlyPrice: 12000,
     setupPrice: 15000,
-    description: 'Módulo arquitetura + três módulos de escolha',
-    includedModules: 4, // arquitetura + 3 módulos
+    description: '4 módulos gratuitos',
+    includedModules: 4,
   },
 ];
 
@@ -174,27 +174,24 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
       return totalPrice - discountAmount;
     }
     
-    // Com plano: setup + módulos extras (acima do incluído)
+    // Com plano: verificar se passou do limite de módulos incluídos
     const totalModules = selectedModules.length;
     const includedCount = plan.includedModules;
     
     if (totalModules <= includedCount) {
-      // Todos os módulos estão incluídos no plano
+      // Todos os módulos estão incluídos no plano: apenas setup
       const discountAmount = (plan.setupPrice * discountPercentage) / 100;
       return plan.setupPrice - discountAmount;
     }
     
-    // Há módulos extras: calcular preço apenas dos módulos que excedem o incluído
-    const extraModules = selectedModules.slice(includedCount);
-    let extraModulesPrice = 0;
-    
-    extraModules.forEach(selected => {
-      extraModulesPrice += getModulePrice(selected);
+    // Passou do limite: somar TODOS os módulos e isentar setup
+    let allModulesPrice = 0;
+    selectedModules.forEach(selected => {
+      allModulesPrice += getModulePrice(selected);
     });
     
-    const subtotal = plan.setupPrice + extraModulesPrice;
-    const discountAmount = (subtotal * discountPercentage) / 100;
-    return subtotal - discountAmount;
+    const discountAmount = (allModulesPrice * discountPercentage) / 100;
+    return allModulesPrice - discountAmount;
   };
 
   const finalPrice = calculateFinalPrice();
@@ -302,16 +299,22 @@ const PriceBreakdown: React.FC<PriceBreakdownProps> = ({
 
             {selectedPlan && (
               <>
-                <div className="flex justify-between items-center text-sm">
-                  <span>Setup do Plano</span>
-                  <span className="font-medium">{formatCurrency(plan?.setupPrice || 0)}</span>
-                </div>
-                
-                {extraModulesCount > 0 && (
-                  <div className="flex justify-between items-center text-sm text-muted-foreground">
-                    <span>{extraModulesCount} módulo(s) extra(s)</span>
-                    <span>{formatCurrency(selectedModules.slice(includedModulesCount).reduce((sum, m) => sum + getModulePrice(m), 0))}</span>
+                {extraModulesCount === 0 ? (
+                  <div className="flex justify-between items-center text-sm">
+                    <span>Setup do Plano</span>
+                    <span className="font-medium">{formatCurrency(plan?.setupPrice || 0)}</span>
                   </div>
+                ) : (
+                  <>
+                    <div className="flex justify-between items-center text-sm text-muted-foreground line-through">
+                      <span>Setup do Plano (isento)</span>
+                      <span>{formatCurrency(plan?.setupPrice || 0)}</span>
+                    </div>
+                    <div className="flex justify-between items-center text-sm">
+                      <span>Todos os módulos ({totalModulesCount})</span>
+                      <span className="font-medium">{formatCurrency(selectedModules.reduce((sum, m) => sum + getModulePrice(m), 0))}</span>
+                    </div>
+                  </>
                 )}
               </>
             )}
