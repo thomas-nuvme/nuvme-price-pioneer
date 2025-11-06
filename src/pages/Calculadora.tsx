@@ -163,29 +163,6 @@ const Calculadora = () => {
     databaseSize?: "small" | "medium" | "large"
   ) => {
     setSelectedModules((prev) => {
-      if (
-        module.id === "cicd" &&
-        prev.some((item) => item.module.id === "gitops")
-      ) {
-        toast({
-          variant: "destructive",
-          title: "Erro",
-          description: "CI/CD não pode ser selecionado junto com GitOps",
-        });
-        return prev;
-      }
-      if (
-        module.id === "gitops" &&
-        prev.some((item) => item.module.id === "cicd")
-      ) {
-        toast({
-          variant: "destructive",
-          title: "Erro",
-          description: "GitOps não pode ser selecionado junto com CI/CD",
-        });
-        return prev;
-      }
-
       const exists = prev.find((item) => item.module.id === module.id);
       if (exists) {
         return prev.map((item) =>
