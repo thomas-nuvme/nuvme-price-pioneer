@@ -49,6 +49,19 @@ const Index = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-5xl mx-auto">
             <Card 
               className="hover:shadow-lg transition-shadow cursor-pointer" 
+              onClick={() => navigate('/apresentacao-comercial')}
+            >
+              <CardHeader>
+                <Icon name="Presentation" className="w-10 h-10 text-primary mb-2" />
+                <CardTitle>Apresentação Comercial</CardTitle>
+                <CardDescription>
+                  Propósito, casos de sucesso e squads Nuvme
+                </CardDescription>
+              </CardHeader>
+            </Card>
+
+            <Card 
+              className="hover:shadow-lg transition-shadow cursor-pointer" 
               onClick={() => navigate('/missoes-modulos')}
             >
               <CardHeader>

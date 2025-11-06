@@ -16,6 +16,7 @@ import MissoesModulos from "./pages/MissoesModulos";
 import Planos from "./pages/Planos";
 import Diagnosticos from "./pages/Diagnosticos";
 import Calculadora from "./pages/Calculadora";
+import ApresentacaoComercial from "./pages/ApresentacaoComercial";
 
 const queryClient = new QueryClient();
 
@@ -48,6 +49,7 @@ const App = () => (
                           <Route path="/planos" element={<Planos />} />
                           <Route path="/diagnosticos" element={<Diagnosticos />} />
                           <Route path="/calculadora" element={<Calculadora />} />
+                          <Route path="/apresentacao-comercial" element={<ApresentacaoComercial />} />
                           <Route path="*" element={<NotFound />} />
                         </Routes>
                       </main>

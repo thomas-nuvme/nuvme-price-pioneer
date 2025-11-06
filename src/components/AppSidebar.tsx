@@ -1,4 +1,4 @@
-import { Calculator, FileText, Layers, Target, Home } from "lucide-react";
+import { Calculator, FileText, Layers, Target, Home, Presentation } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import {
   Sidebar,
@@ -16,6 +16,7 @@ import logo from "./images/nuvme-logo.png";
 
 const items = [
   { title: "Início", url: "/", icon: Home },
+  { title: "Apresentação Comercial", url: "/apresentacao-comercial", icon: Presentation },
   { title: "Missões & Módulos", url: "/missoes-modulos", icon: Layers },
   { title: "Planos", url: "/planos", icon: Target },
   { title: "Diagnósticos", url: "/diagnosticos", icon: FileText },
