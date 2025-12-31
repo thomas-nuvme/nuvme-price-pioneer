@@ -20,7 +20,7 @@ const defaultCustomer: Customer = {
   name: '',
   uf: 'SP',
   segmentoNuvme: 'A',
-  plano: 'Essencial',
+  plano: 'Essential',
   segmentoMercado: '',
   fase: '',
   status: 'Saudável',
@@ -146,7 +146,7 @@ export function CustomerForm({ customer, open, onClose, onSave }: CustomerFormPr
                     </SelectTrigger>
                     <SelectContent>
                       <SelectItem value="Together">Together</SelectItem>
-                      <SelectItem value="Essencial">Essencial</SelectItem>
+                      <SelectItem value="Essential">Essential</SelectItem>
                       <SelectItem value="Advanced">Advanced</SelectItem>
                       <SelectItem value="Premier">Premier</SelectItem>
                       <SelectItem value="Apenas Setup">Apenas Setup</SelectItem>
