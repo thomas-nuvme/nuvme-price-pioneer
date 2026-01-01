@@ -17,8 +17,6 @@ import Planos from "./pages/Planos";
 import Diagnosticos from "./pages/Diagnosticos";
 import Calculadora from "./pages/Calculadora";
 
-import DashboardCS from "./pages/DashboardCS";
-
 const queryClient = new QueryClient();
 
 const App = () => (
@@ -50,8 +48,6 @@ const App = () => (
                           <Route path="/planos" element={<Planos />} />
                           <Route path="/diagnosticos" element={<Diagnosticos />} />
                           <Route path="/calculadora" element={<Calculadora />} />
-                          
-                          <Route path="/dashboard-cs" element={<DashboardCS />} />
                           <Route path="*" element={<NotFound />} />
                         </Routes>
                       </main>
