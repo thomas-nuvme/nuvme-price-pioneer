@@ -15,7 +15,7 @@ const plans = [
       {
         title: "Atendimento ao Cliente",
         items: [
-          "Atendimento através de tickets, WhatsApp e e-mail",
+          "Atendimento através de tickets, WhatsApp, e-mail e Slack",
           "Suporte disponível em horário comercial (8x5)"
         ]
       },
@@ -103,6 +103,7 @@ const plans = [
       {
         title: "Tudo do Plano Advanced",
         items: [
+          "Projetos Inclusos → Execução de projetos de infraestrutura e DevOps sem custo adicional",
           "Suporte via Slack e WhatsApp → Comunicação ágil e suporte prioritário",
           "Squad DevOps → Time especializado atuando diretamente na sua infraestrutura AWS",
           "Monitoramento Avançado → Detecção e resolução de problemas antes que impactem a operação",
